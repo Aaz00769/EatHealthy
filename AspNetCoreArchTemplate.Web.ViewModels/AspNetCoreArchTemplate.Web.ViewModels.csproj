@@ -12,4 +12,8 @@
     <ProjectReference Include="..\AspNetCoreArchTemplate.Services.AutoMapping\AspNetCoreArchTemplate.Services.AutoMapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Product\" />
+  </ItemGroup>
+
 </Project>

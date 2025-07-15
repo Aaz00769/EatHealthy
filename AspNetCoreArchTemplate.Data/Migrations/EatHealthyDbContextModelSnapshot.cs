@@ -4,19 +4,16 @@ using AspNetCoreArchTemplate.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace AspNetCoreArchTemplate.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250709134552_InitialMigration")]
-    partial class InitialMigration
+    [DbContext(typeof(EatHealthyDbContext))]
+    partial class EatHealthyDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,48 +24,42 @@ namespace AspNetCoreArchTemplate.Data.Migrations
 
             modelBuilder.Entity("AspNetCoreArchTemplate.Data.Models.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasComment("Product ID");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<int>("Calories")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasComment("Calories per 100g");
+
+                    b.Property<int?>("Carbohydrates")
+                        .HasColumnType("int")
+                        .HasComment("Carbohydrates per 100g (g)");
+
+                    b.Property<int?>("Fats")
+                        .HasColumnType("int")
+                        .HasComment("Fats per 100g (g)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .HasComment("Product name");
 
                     b.Property<int?>("Proteins")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasComment("Proteins per 100g (g)");
 
-                    b.Property<int>("Vitamins")
-                        .HasColumnType("int");
+                    b.Property<int?>("ServingSizeGrams")
+                        .HasColumnType("int")
+                        .HasComment("Standard serving size in grams");
 
                     b.HasKey("Id");
 
                     b.ToTable("Products", t =>
                         {
                             t.HasComment("Product");
-                        });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Calories = 100,
-                            Name = "Banana",
-                            Vitamins = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Calories = 200,
-                            Name = "Apple",
-                            Vitamins = 0
                         });
                 });
 

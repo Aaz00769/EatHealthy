@@ -8,26 +8,31 @@ using System.Text;
 using System.Threading.Tasks;
 
 
+
 namespace AspNetCoreArchTemplate.Data.Models
 {
     [Comment("Product")]
     public class Product
     {
         [Comment("Product ID")]
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        [MaxLength(100)]
+        public Guid Id { get; set; } = Guid.NewGuid();
+        
+        [Comment("Product name")]
         public string Name { get; set; }
 
-        [Required]
-        [Range(1, 150,ErrorMessage = "Calories must be more then 1 and less then 150")]
+        [Comment("Calories per 100g")]
         public int Calories { get; set; }
 
+        [Comment("Proteins per 100g (g)")]
         public int? Proteins { get; set; }
 
-        public int Vitamins {  get; set; }
+        [Comment("Fats per 100g (g)")]
+        public int? Fats { get; set; }
 
+        [Comment("Carbohydrates per 100g (g)")]
+        public int? Carbohydrates { get; set; }
+
+        [Comment("Standard serving size in grams")]
+        public int? ServingSizeGrams { get; set; }
     }
 }

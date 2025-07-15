@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace AspNetCoreArchTemplate.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class StartMIgration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,12 +54,13 @@ namespace AspNetCoreArchTemplate.Data.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false, comment: "Product ID")
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Calories = table.Column<int>(type: "int", nullable: false),
-                    Proteins = table.Column<int>(type: "int", nullable: true),
-                    Vitamins = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "Product ID"),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false, comment: "Product name"),
+                    Calories = table.Column<int>(type: "int", nullable: false, comment: "Calories per 100g"),
+                    Proteins = table.Column<int>(type: "int", nullable: true, comment: "Proteins per 100g (g)"),
+                    Fats = table.Column<int>(type: "int", nullable: true, comment: "Fats per 100g (g)"),
+                    Carbohydrates = table.Column<int>(type: "int", nullable: true, comment: "Carbohydrates per 100g (g)"),
+                    ServingSizeGrams = table.Column<int>(type: "int", nullable: true, comment: "Standard serving size in grams")
                 },
                 constraints: table =>
                 {
@@ -173,15 +172,6 @@ namespace AspNetCoreArchTemplate.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "Calories", "Name", "Proteins", "Vitamins" },
-                values: new object[,]
-                {
-                    { 1, 100, "Banana", null, 0 },
-                    { 2, 200, "Apple", null, 0 }
                 });
 
             migrationBuilder.CreateIndex(
