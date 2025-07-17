@@ -12,7 +12,12 @@
         {
 
         }
+
+
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Recipe> Recipes { get; set; }
+        public virtual DbSet<RecipeProduct> RecipeProductProducts { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
