@@ -1,5 +1,7 @@
 namespace AspNetCoreArchTemplate.Web
 {
+    using AspNetCoreArchTemplate.Services.Core;
+    using AspNetCoreArchTemplate.Services.Core.Interfaces;
     using Data;
 
     using Microsoft.AspNetCore.Identity;
@@ -26,6 +28,8 @@ namespace AspNetCoreArchTemplate.Web
                 })
                 .AddEntityFrameworkStores<EatHealthyDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddTransient<IProductService, ProductService>();
 
             WebApplication? app = builder.Build();
             

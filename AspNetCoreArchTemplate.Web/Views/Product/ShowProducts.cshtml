@@ -1,0 +1,36 @@
+﻿@using AspNetCoreArchTemplate.Web.ViewModels.Product
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ProductListViewModel
+
+@{
+    ViewData["Title"] = "Available Products";
+}
+
+<h2>Available Products @Model.TotalCount</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Calories</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Calories</td>
+                <td>
+                    <!-- For now just a placeholder button -->
+                    <button class="btn btn-primary btn-sm">Add</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

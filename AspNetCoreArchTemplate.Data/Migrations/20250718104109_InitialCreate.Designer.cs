@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetCoreArchTemplate.Data.Migrations
 {
     [DbContext(typeof(EatHealthyDbContext))]
-    [Migration("20250717102022_AddRecipeEntityAndRecepieProduct")]
-    partial class AddRecipeEntityAndRecepieProduct
+    [Migration("20250718104109_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,302 @@ namespace AspNetCoreArchTemplate.Data.Migrations
                     b.ToTable("Products", t =>
                         {
                             t.HasComment("Product");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7b767862-66d7-4ace-83b7-51613252c685"),
+                            Calories = 52,
+                            Name = "Apple"
+                        },
+                        new
+                        {
+                            Id = new Guid("c73429f2-e2eb-4a1d-a52d-1563f52f9ea2"),
+                            Calories = 89,
+                            Name = "Banana"
+                        },
+                        new
+                        {
+                            Id = new Guid("1508009a-e861-4dc3-a44d-0dffb32b21b6"),
+                            Calories = 41,
+                            Name = "Carrot"
+                        },
+                        new
+                        {
+                            Id = new Guid("f36ec06d-e355-4b63-a59c-91fcef5e0545"),
+                            Calories = 34,
+                            Name = "Broccoli"
+                        },
+                        new
+                        {
+                            Id = new Guid("f1fe4e41-bce2-4b75-ad3d-1d6b750804a8"),
+                            Calories = 165,
+                            Name = "Chicken Breast"
+                        },
+                        new
+                        {
+                            Id = new Guid("22d3eb52-22a0-410f-b399-89f1e8b20773"),
+                            Calories = 208,
+                            Name = "Salmon"
+                        },
+                        new
+                        {
+                            Id = new Guid("2d21ce5b-fe89-44e9-bbf5-a9de0bf47973"),
+                            Calories = 155,
+                            Name = "Egg"
+                        },
+                        new
+                        {
+                            Id = new Guid("557b1505-97c3-43b1-9037-473b2cd3ce93"),
+                            Calories = 579,
+                            Name = "Almonds"
+                        },
+                        new
+                        {
+                            Id = new Guid("9bb8b0d0-c86f-44a1-8d82-20df6159d903"),
+                            Calories = 123,
+                            Name = "Brown Rice"
+                        },
+                        new
+                        {
+                            Id = new Guid("8b5f3fe7-835c-466e-8aa4-63af338688c4"),
+                            Calories = 389,
+                            Name = "Oats"
+                        },
+                        new
+                        {
+                            Id = new Guid("46c76cbb-a166-4498-817a-5c0b37f4c75b"),
+                            Calories = 61,
+                            Name = "Milk (Whole)"
+                        },
+                        new
+                        {
+                            Id = new Guid("83985cba-f3ef-45f2-a0bc-2ea8b5657afd"),
+                            Calories = 59,
+                            Name = "Greek Yogurt"
+                        },
+                        new
+                        {
+                            Id = new Guid("c3d8f3ce-1195-410d-8bcc-6e29264150a0"),
+                            Calories = 403,
+                            Name = "Cheddar Cheese"
+                        },
+                        new
+                        {
+                            Id = new Guid("9dfcf6ca-b86e-423f-98c0-bb710cdf4f93"),
+                            Calories = 23,
+                            Name = "Spinach"
+                        },
+                        new
+                        {
+                            Id = new Guid("d9490ea2-dc8a-4ea2-aef0-988db57b652f"),
+                            Calories = 18,
+                            Name = "Tomato"
+                        },
+                        new
+                        {
+                            Id = new Guid("beae335b-50dd-4731-b5bd-061c54d0f476"),
+                            Calories = 77,
+                            Name = "Potato"
+                        },
+                        new
+                        {
+                            Id = new Guid("4eabf8d4-ce2f-4e10-aef3-4511256c91f5"),
+                            Calories = 86,
+                            Name = "Sweet Potato"
+                        },
+                        new
+                        {
+                            Id = new Guid("59c5cb91-533a-47e6-9d25-91f32c444dd0"),
+                            Calories = 250,
+                            Name = "Beef (Lean)"
+                        },
+                        new
+                        {
+                            Id = new Guid("9153ed88-afaa-44d2-ba48-1c1166c17295"),
+                            Calories = 132,
+                            Name = "Tuna (Canned in Water)"
+                        },
+                        new
+                        {
+                            Id = new Guid("e4c9c62d-b13b-4643-9e12-25bad72a48d1"),
+                            Calories = 99,
+                            Name = "Shrimp"
+                        },
+                        new
+                        {
+                            Id = new Guid("2f987c6f-0860-4824-ad71-46bbb582253d"),
+                            Calories = 76,
+                            Name = "Tofu"
+                        },
+                        new
+                        {
+                            Id = new Guid("3c6b4530-4599-48a3-8037-83eb1ab490b8"),
+                            Calories = 116,
+                            Name = "Lentils"
+                        },
+                        new
+                        {
+                            Id = new Guid("e66f7950-0102-417c-b7e9-d5529f69d9aa"),
+                            Calories = 164,
+                            Name = "Chickpeas"
+                        },
+                        new
+                        {
+                            Id = new Guid("22f2d521-f93b-4fdc-9d0d-4d0c913b3cac"),
+                            Calories = 127,
+                            Name = "Kidney Beans"
+                        },
+                        new
+                        {
+                            Id = new Guid("c98328ca-7671-4636-8711-a40229b0f6ab"),
+                            Calories = 16,
+                            Name = "Cucumber"
+                        },
+                        new
+                        {
+                            Id = new Guid("ea124436-a1fb-4afd-8a46-b61adb78b469"),
+                            Calories = 15,
+                            Name = "Lettuce"
+                        },
+                        new
+                        {
+                            Id = new Guid("eb34f2c4-f444-40e0-bb47-0d214c3a94a5"),
+                            Calories = 17,
+                            Name = "Zucchini"
+                        },
+                        new
+                        {
+                            Id = new Guid("3549960a-2c32-4149-9497-936fc53c6b5d"),
+                            Calories = 22,
+                            Name = "Mushrooms"
+                        },
+                        new
+                        {
+                            Id = new Guid("b53a5bb0-6b7a-4982-9026-3ec5983aff57"),
+                            Calories = 160,
+                            Name = "Avocado"
+                        },
+                        new
+                        {
+                            Id = new Guid("a7105290-975e-44ae-9e91-c990bc075e5e"),
+                            Calories = 50,
+                            Name = "Pineapple"
+                        },
+                        new
+                        {
+                            Id = new Guid("bca1c0d6-266b-4c1d-8384-bb3a404c214b"),
+                            Calories = 47,
+                            Name = "Orange"
+                        },
+                        new
+                        {
+                            Id = new Guid("3ad573e5-bda1-4b00-a4e2-ca532db7b294"),
+                            Calories = 57,
+                            Name = "Blueberries"
+                        },
+                        new
+                        {
+                            Id = new Guid("b326bf6a-9a29-443d-9918-872bf574fd7e"),
+                            Calories = 32,
+                            Name = "Strawberries"
+                        },
+                        new
+                        {
+                            Id = new Guid("8729ce1d-5e20-4ac8-8e88-b6e460e5d027"),
+                            Calories = 30,
+                            Name = "Watermelon"
+                        },
+                        new
+                        {
+                            Id = new Guid("fd1d1dde-c6f9-411d-83c1-09d30f1e32dd"),
+                            Calories = 588,
+                            Name = "Peanut Butter"
+                        },
+                        new
+                        {
+                            Id = new Guid("604c5052-e0cb-470f-8edf-947d1d5039b1"),
+                            Calories = 98,
+                            Name = "Cottage Cheese"
+                        },
+                        new
+                        {
+                            Id = new Guid("02b632ed-4ce6-43e6-96f1-2c76351d2e14"),
+                            Calories = 120,
+                            Name = "Quinoa"
+                        },
+                        new
+                        {
+                            Id = new Guid("74ef7bae-d2c6-4a1b-9e57-6fcb965b6aed"),
+                            Calories = 354,
+                            Name = "Barley"
+                        },
+                        new
+                        {
+                            Id = new Guid("3485f0ee-771a-47a6-bb38-866fb92c27e9"),
+                            Calories = 26,
+                            Name = "Pumpkin"
+                        },
+                        new
+                        {
+                            Id = new Guid("885e49e6-1710-4876-b15b-73a8cf271ec5"),
+                            Calories = 81,
+                            Name = "Green Peas"
+                        },
+                        new
+                        {
+                            Id = new Guid("d25aeaa7-bc83-4117-adb5-4c8bad358282"),
+                            Calories = 25,
+                            Name = "Cauliflower"
+                        },
+                        new
+                        {
+                            Id = new Guid("e0731bd3-4ee2-4e3d-b300-75651f24a76c"),
+                            Calories = 25,
+                            Name = "Eggplant"
+                        },
+                        new
+                        {
+                            Id = new Guid("bd32f447-68dc-433b-ad8f-bfcad40db48c"),
+                            Calories = 52,
+                            Name = "Raspberries"
+                        },
+                        new
+                        {
+                            Id = new Guid("9d92bd77-34ff-4a83-a0f4-a6e74cfe13f4"),
+                            Calories = 132,
+                            Name = "Black Beans"
+                        },
+                        new
+                        {
+                            Id = new Guid("45f3fd0a-ed02-449d-aec9-9f96f92d35d2"),
+                            Calories = 230,
+                            Name = "Coconut Milk"
+                        },
+                        new
+                        {
+                            Id = new Guid("2f70b5d1-73a6-4be1-8518-eb75c888189d"),
+                            Calories = 277,
+                            Name = "Dates"
+                        },
+                        new
+                        {
+                            Id = new Guid("ec86b662-9b24-4838-b206-41905882cd5d"),
+                            Calories = 304,
+                            Name = "Honey"
+                        },
+                        new
+                        {
+                            Id = new Guid("45109a13-9b17-4f6a-8744-228ec63ead77"),
+                            Calories = 1,
+                            Name = "Green Tea"
+                        },
+                        new
+                        {
+                            Id = new Guid("263e5267-2637-40ba-9412-3f226b1b3afc"),
+                            Calories = 598,
+                            Name = "Dark Chocolate (85%)"
                         });
                 });
 
