@@ -1,7 +1,7 @@
-namespace AspNetCoreArchTemplate.Web
+namespace EatHealthy.Web
 {
-    using AspNetCoreArchTemplate.Services.Core;
-    using AspNetCoreArchTemplate.Services.Core.Interfaces;
+    using EatHealthy.Services.Core;
+    using EatHealthy.Services.Core.Interfaces;
     using Data;
 
     using Microsoft.AspNetCore.Identity;

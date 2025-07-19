@@ -1,6 +1,6 @@
-﻿namespace AspNetCoreArchTemplate.Data
+﻿namespace EatHealthy.Data
 {
-    using AspNetCoreArchTemplate.Data.Models;
+    using EatHealthy.Data.Models;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using System.Reflection;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AspNetCoreArchTemplate.Web.ViewModels.Product
+namespace EatHealthy.Web.ViewModels.Product
 {
     public class ProductListViewModel
     {

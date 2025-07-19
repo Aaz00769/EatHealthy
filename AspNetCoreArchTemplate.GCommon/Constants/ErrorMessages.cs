@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AspNetCoreArchTemplate.GCommon.Constants
+namespace EatHealthy.GCommon.Constants
 {
     public static class ErrorMessages
     {

@@ -1,4 +1,4 @@
-﻿using AspNetCoreArchTemplate.GCommon.Constants;
+﻿using EatHealthy.GCommon.Constants;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 
 
-namespace AspNetCoreArchTemplate.Data.Models
+namespace EatHealthy.Data.Models
 {
     [Comment("Links a Product to a Recipe with a specific amount")]
     public class RecipeProduct

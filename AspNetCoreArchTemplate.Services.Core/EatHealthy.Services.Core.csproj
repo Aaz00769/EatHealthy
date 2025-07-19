@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Data.Models\EatHealthy.Data.Models.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Data\AspNetCoreArchTemplate.Data.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.GCommon\EatHealthy.GCommon.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Services.AutoMapping\EatHealthy.Services.AutoMapping.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Services.Common\EatHealthy.Services.Common.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Web.ViewModels\EatHealthy.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

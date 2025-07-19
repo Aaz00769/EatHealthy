@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AspNetCoreArchTemplate.Data.Common
+namespace EatHealthy.Data.Common
 {
     public static class EntityConsts
     {

@@ -1,6 +1,6 @@
-﻿using AspNetCoreArchTemplate.Data;
-using AspNetCoreArchTemplate.Services.Core.Interfaces;
-using AspNetCoreArchTemplate.Web.ViewModels.Product;
+﻿using EatHealthy.Data;
+using EatHealthy.Services.Core.Interfaces;
+using EatHealthy.Web.ViewModels.Product;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AspNetCoreArchTemplate.Services.Core
+namespace EatHealthy.Services.Core
 {
     public class ProductService : IProductService
     {

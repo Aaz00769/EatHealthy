@@ -1,4 +1,4 @@
-namespace AspNetCoreArchTemplate.Web.Controllers
+namespace EatHealthy.Web.Controllers
 {
     using System.Diagnostics;
 

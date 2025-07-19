@@ -25,9 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNetCoreArchTemplate.Data.Common\AspNetCoreArchTemplate.Data.Common.csproj" />
-    <ProjectReference Include="..\AspNetCoreArchTemplate.Data.Models\AspNetCoreArchTemplate.Data.Models.csproj" />
-    <ProjectReference Include="..\AspNetCoreArchTemplate.GCommon\AspNetCoreArchTemplate.GCommon.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Data.Common\EatHealthy.Data.Common.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Data.Models\EatHealthy.Data.Models.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.GCommon\EatHealthy.GCommon.csproj" />
   </ItemGroup>
 
 </Project>

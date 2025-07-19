@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AspNetCoreArchTemplate.GCommon
+namespace EatHealthy.GCommon
 {
     public static class ApplicationConstants
     {

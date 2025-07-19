@@ -1,4 +1,4 @@
-namespace AspNetCoreArchTemplate.Web.ViewModels
+namespace EatHealthy.Web.ViewModels
 {
     public class ErrorViewModel
     {

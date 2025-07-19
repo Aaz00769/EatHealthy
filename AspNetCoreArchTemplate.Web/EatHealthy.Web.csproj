@@ -17,10 +17,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspNetCoreArchTemplate.Data\AspNetCoreArchTemplate.Data.csproj" />
-    <ProjectReference Include="..\AspNetCoreArchTemplate.GCommon\AspNetCoreArchTemplate.GCommon.csproj" />
-    <ProjectReference Include="..\AspNetCoreArchTemplate.Services.Core\AspNetCoreArchTemplate.Services.Core.csproj" />
-    <ProjectReference Include="..\AspNetCoreArchTemplate.Web.Infrastructure\AspNetCoreArchTemplate.Web.Infrastructure.csproj" />
-    <ProjectReference Include="..\AspNetCoreArchTemplate.Web.ViewModels\AspNetCoreArchTemplate.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.GCommon\EatHealthy.GCommon.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Services.Core\EatHealthy.Services.Core.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Web.Infrastructure\EatHealthy.Web.Infrastructure.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Web.ViewModels\EatHealthy.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

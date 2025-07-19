@@ -1,8 +1,8 @@
-﻿using AspNetCoreArchTemplate.Services.Core.Interfaces;
-using AspNetCoreArchTemplate.Web.ViewModels.Product;
+﻿using EatHealthy.Services.Core.Interfaces;
+using EatHealthy.Web.ViewModels.Product;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AspNetCoreArchTemplate.Web.Controllers
+namespace EatHealthy.Web.Controllers
 {
     public class ProductController : Controller
     {

@@ -1,6 +1,6 @@
 ﻿
 
-namespace AspNetCoreArchTemplate.Data.Configuration
+namespace EatHealthy.Data.Configuration
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.ChangeTracking;

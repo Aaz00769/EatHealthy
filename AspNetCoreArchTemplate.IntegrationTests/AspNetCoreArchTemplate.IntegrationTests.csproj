@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspNetCoreArchTemplate.Data\AspNetCoreArchTemplate.Data.csproj" />
-    <ProjectReference Include="..\AspNetCoreArchTemplate.Services.Core\AspNetCoreArchTemplate.Services.Core.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Services.Core\EatHealthy.Services.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

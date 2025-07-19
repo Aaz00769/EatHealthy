@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AspNetCoreArchTemplate.Data.Models
+namespace EatHealthy.Data.Models
 {
     [Comment("User-created recipe")]
     public class Recipe
