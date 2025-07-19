@@ -29,8 +29,34 @@ namespace EatHealthy.Web.Controllers
             return View(viewModel);
         }
 
-     
 
-        
+        [HttpGet]
+        public async Task<IActionResult> AddProduct()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(ProductFormInputModel inputModel)
+        {
+            if(!this.ModelState.IsValid)
+            {
+                return this.View(inputModel);
+            }
+
+            try
+            {
+                await this._productService.AddProductAsync(inputModel);
+
+                return RedirectToAction(nameof(ShowProducts));
+            }
+            catch (Exception e)
+            {
+                this.ModelState.AddModelError(string.Empty,e.Message);
+                return this.View(inputModel);
+            }
+        }
+
+
     }
 }

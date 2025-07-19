@@ -10,7 +10,9 @@
     ViewData["Title"] = "Available Products";
 }
 
-<h2>Available Products @Model.TotalCount</h2>
+<h2>
+    Available Products @Model.TotalCount <a asp-action="AddProduct" class="btn btn-primary btn-sm ml-2">Add</a>
+</h2>
 
 <table class="table table-striped">
     <thead>

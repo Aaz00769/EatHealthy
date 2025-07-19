@@ -1,0 +1,47 @@
+﻿@model EatHealthy.Web.ViewModels.Product.ProductFormInputModel
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<h2>Add New Product</h2>
+
+<form asp-action="AddProduct" method="post">
+    <div class="form-group">
+        <label asp-for="ProductName"></label>
+        <input asp-for="ProductName" class="form-control" />
+        <span asp-validation-for="ProductName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Calories"></label>
+        <input asp-for="Calories" class="form-control" />
+        <span asp-validation-for="Calories" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Proteins"></label>
+        <input asp-for="Proteins" class="form-control" />
+        <span asp-validation-for="Proteins" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Fats"></label>
+        <input asp-for="Fats" class="form-control" />
+        <span asp-validation-for="Fats" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Carbohydrates"></label>
+        <input asp-for="Carbohydrates" class="form-control" />
+        <span asp-validation-for="Carbohydrates" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Product</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

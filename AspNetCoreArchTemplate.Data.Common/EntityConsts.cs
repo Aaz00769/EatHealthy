@@ -10,6 +10,7 @@ namespace EatHealthy.Data.Common
     {
         public static class Product
         {
+            public const int NameMinLength = 2;
             public const int NameMaxLength = 64;
 
             public const int CaloriesMin = 0;
@@ -18,6 +19,14 @@ namespace EatHealthy.Data.Common
             public const int MacronutrientMin = 0;
             public const int MacronutrientMax = 500;
 
+            public const int FatsMin = 0;
+            public const int FatsMax = 500;
+
+            public const int ProteinsMin = 0;
+            public const int ProteinsMax = 500;
+
+            public const int CarbohydratesMin = 0;
+            public const int CarbohydratesMax = 300;
         }
 
         public static class Recipie

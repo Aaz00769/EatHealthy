@@ -2,6 +2,7 @@
 using EatHealthy.Services.Core.Interfaces;
 using EatHealthy.Web.ViewModels.Product;
 using Microsoft.EntityFrameworkCore;
+using EatHealthy.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace EatHealthy.Services.Core
             _context = context;
         }
 
+        
+
         public async Task<IEnumerable<ProductViewModel>> GetAllProductAsync()
         {
             IEnumerable<ProductViewModel> allProducts = await this._context
@@ -33,11 +36,25 @@ namespace EatHealthy.Services.Core
                 })
                 .ToListAsync();
 
-            /*int productsCount = await this._context
-               .Products
-               .CountAsync();
-            */
+           
             return allProducts;
+        }
+
+        public async Task AddProductAsync(ProductFormInputModel inputModel)
+        {
+            Product newProduct = new Product()
+            {
+                Name = inputModel.ProductName,
+                Calories = inputModel.Calories,
+                Proteins=inputModel.Proteins,
+                Fats=inputModel.Fats,
+                Carbohydrates=inputModel.Carbohydrates
+            };
+
+            await this._context.Products.AddAsync(newProduct);
+            await this._context.SaveChangesAsync();
+
+
         }
     }
 }

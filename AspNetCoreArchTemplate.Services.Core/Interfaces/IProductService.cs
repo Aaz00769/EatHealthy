@@ -10,5 +10,7 @@ namespace EatHealthy.Services.Core.Interfaces
     public interface IProductService
     {
         Task<IEnumerable<ProductViewModel>> GetAllProductAsync();
+
+        Task AddProductAsync(ProductFormInputModel inputModel);
     }
 }
