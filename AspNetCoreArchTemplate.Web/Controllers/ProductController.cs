@@ -44,6 +44,14 @@ namespace EatHealthy.Web.Controllers
                 return this.View(inputModel);
             }
 
+            bool exists=await this._productService.ProductExist(inputModel.ProductName);
+
+            if (exists) 
+            {
+                this.ModelState.AddModelError(nameof(inputModel.ProductName), "A product with this name already exists.");
+                return this.View(inputModel);
+            }
+
             try
             {
                 await this._productService.AddProductAsync(inputModel);

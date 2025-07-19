@@ -12,5 +12,8 @@ namespace EatHealthy.Services.Core.Interfaces
         Task<IEnumerable<ProductViewModel>> GetAllProductAsync();
 
         Task AddProductAsync(ProductFormInputModel inputModel);
+
+        Task<bool> ProductExist(string name);
+
     }
 }

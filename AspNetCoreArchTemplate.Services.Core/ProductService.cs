@@ -56,5 +56,10 @@ namespace EatHealthy.Services.Core
 
 
         }
+
+        public async Task<bool> ProductExist(string name)
+        {
+            return await this._context.Products.AnyAsync(p => p.Name == name);
+        }
     }
 }
