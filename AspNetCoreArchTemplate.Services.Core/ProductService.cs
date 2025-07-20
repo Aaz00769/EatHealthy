@@ -61,5 +61,41 @@ namespace EatHealthy.Services.Core
         {
             return await this._context.Products.AnyAsync(p => p.Name == name);
         }
+
+        public async Task EditProductAsync(Guid id, ProductFormInputModel inputModel)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null)
+            {
+                throw new InvalidOperationException("Product not found.");
+            }
+
+            product.Name = inputModel.ProductName;
+            product.Calories = inputModel.Calories;
+            product.Proteins = inputModel.Proteins;
+            product.Fats = inputModel.Fats;
+            product.Carbohydrates = inputModel.Carbohydrates;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<ProductFormInputModel?> GetProductByIdAsync(Guid id)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null) return null;
+
+            return new ProductFormInputModel
+            {
+                ProductId = product.Id,
+                ProductName = product.Name,
+                Calories = product.Calories,
+                Fats = product.Fats,
+                Proteins = product.Proteins,
+                Carbohydrates = product.Carbohydrates
+            };
+        }
+       
     }
 }

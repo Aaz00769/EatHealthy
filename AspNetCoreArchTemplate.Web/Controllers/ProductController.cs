@@ -43,7 +43,7 @@ namespace EatHealthy.Web.Controllers
             {
                 return this.View(inputModel);
             }
-
+           
             bool exists=await this._productService.ProductExist(inputModel.ProductName);
 
             if (exists) 
@@ -64,7 +64,37 @@ namespace EatHealthy.Web.Controllers
                 return this.View(inputModel);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> EditProduct(Guid id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
 
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditProduct(ProductFormInputModel inputModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(inputModel);
+            }
+
+            try
+            {
+                await _productService.EditProductAsync(inputModel.ProductId, inputModel);
+                return RedirectToAction(nameof(ShowProducts));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while editing the product.");
+                return View(inputModel);
+            }
+        }
 
     }
 }

@@ -10,6 +10,7 @@ namespace EatHealthy.Web.ViewModels.Product
 {
     public class ProductFormInputModel
     {
+        public Guid ProductId { get; set; } 
         [Required(ErrorMessage = NameRequired)]
         [MinLength(NameMinLength,ErrorMessage =(NameLength))]
         [MaxLength(NameMaxLength, ErrorMessage = NameLength)]
