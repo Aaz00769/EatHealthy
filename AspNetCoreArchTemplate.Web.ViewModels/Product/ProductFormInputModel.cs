@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static EatHealthy.Web.ViewModels.ValidationMassages.Product;
+using static EatHealthy.Web.ViewModels.ValidationMessages.Product;
 using static EatHealthy.Data.Common.EntityConsts.Product;
 namespace EatHealthy.Web.ViewModels.Product
 {
