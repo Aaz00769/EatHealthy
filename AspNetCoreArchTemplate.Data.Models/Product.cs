@@ -16,9 +16,9 @@ namespace EatHealthy.Data.Models
     {
         [Comment("Product ID")]
         public Guid Id { get; set; } = Guid.NewGuid();
-        
+
         [Comment("Product name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         [Comment("Calories per 100g")]
         public int Calories { get; set; }
@@ -34,5 +34,8 @@ namespace EatHealthy.Data.Models
 
         [Comment("Standard serving size in grams")]
         public int? ServingSizeGrams { get; set; }
+
+        public ICollection<RecipeProduct> RecipeProducts { get; set; } = new HashSet<RecipeProduct>();
+
     }
 }

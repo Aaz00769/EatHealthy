@@ -14,7 +14,7 @@ namespace EatHealthy.Data.Common
             public const int NameMaxLength = 64;
 
             public const int CaloriesMin = 0;
-            public const int CaloriesMax = 2000; 
+            public const int CaloriesMax = 2000;
 
             public const int MacronutrientMin = 0;
             public const int MacronutrientMax = 500;
@@ -43,7 +43,23 @@ namespace EatHealthy.Data.Common
             public const int GramsMin = 1;
             public const int GramsMax = 10000;
 
-            public const int NoteMaxLength = 1000; 
+            public const int NoteMaxLength = 1000;
+        }
+
+        public static class Meal
+        {
+            public const int NameMaxLength = 50;
+            public const int NoteMaxLength = 1000;
+        }
+
+        public static class MealRecipe
+        {
+            public const int NoteMaxLength = 1000;
+        }
+
+        public static class Day
+        {
+            public const int NoteMaxLength = 1000;
         }
 
     }

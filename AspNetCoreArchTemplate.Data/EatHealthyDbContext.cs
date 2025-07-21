@@ -1,24 +1,24 @@
-﻿namespace EatHealthy.Data
+﻿
+namespace EatHealthy.Data
 {
     using EatHealthy.Data.Models;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using System.Reflection;
-    using System.Reflection.Emit;
 
     public class EatHealthyDbContext : IdentityDbContext
     {
         public EatHealthyDbContext(DbContextOptions<EatHealthyDbContext> options)
             : base(options)
         {
-
         }
-
 
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Recipe> Recipes { get; set; }
         public virtual DbSet<RecipeProduct> RecipeProductProducts { get; set; }
-
+        public virtual DbSet<Meal> Meals { get; set; }
+        public virtual DbSet<Day> Days { get; set; }
+        public virtual DbSet<DayMeal> DayMeals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -76,8 +76,7 @@
                 new Product { Id = Guid.NewGuid(), Name = "Honey", Calories = 304 },
                 new Product { Id = Guid.NewGuid(), Name = "Green Tea", Calories = 1 },
                 new Product { Id = Guid.NewGuid(), Name = "Dark Chocolate (85%)", Calories = 598 });
-
-       
+        
         }
     }
 }

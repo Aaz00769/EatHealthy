@@ -30,12 +30,12 @@ namespace EatHealthy.Data.Configuration
 
             entity
                 .HasOne(rp => rp.Recipe)
-                .WithMany(r => r.RecipeProducts)
+                .WithMany(rp => rp.RecipeProducts)
                 .HasForeignKey(rp => rp.RecipeId);
 
             entity
                 .HasOne(rp => rp.Product)
-                .WithMany()
+                .WithMany(p => p.RecipeProducts)
                 .HasForeignKey(rp => rp.ProductId);
 
             entity
