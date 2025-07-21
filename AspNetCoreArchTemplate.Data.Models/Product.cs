@@ -35,6 +35,9 @@ namespace EatHealthy.Data.Models
         [Comment("Standard serving size in grams")]
         public int? ServingSizeGrams { get; set; }
 
+        [Comment("Used to check if itme is Soft Delited")]
+        public bool IsDeleted {  get; set; } = false;
+
         public ICollection<RecipeProduct> RecipeProducts { get; set; } = new HashSet<RecipeProduct>();
 
     }

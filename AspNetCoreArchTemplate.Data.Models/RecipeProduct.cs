@@ -29,6 +29,9 @@ namespace EatHealthy.Data.Models
         [Comment("Optional description (e.g., chopped, grilled, peeled)")]
         public string? Note { get; set; }
 
+        [Comment("Times Product is used in Recepie")]
+        public int Quantity { get; set; } = 1;
+
         // Navigation properties
         public Recipe Recipe { get; set; } = null!;
         public Product Product { get; set; } = null!;
