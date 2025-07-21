@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EatHealthy.Web.ViewModels
 {
-    public static class ValidationMassages
+    public static class ValidationMessages
     {
         public static class Product
         {
@@ -26,6 +26,14 @@ namespace EatHealthy.Web.ViewModels
             public const string CarbohydratesRange = "Carbohydrates must be between 1 and 2 grams.";
 
             public const string InvalidFormat = "Invalid format.";
+        }
+        public static class Recipe
+        {
+            public const string NameRequired = "Recipe name is required.";
+            public const string NameLength = "Recipe name must be between 1 and 100 characters.";
+            public const string DescriptionLength = "Description cannot be longer than 1000 characters.";
+            public const string AtLeastOneProduct = "You must include at least one product.";
+            public const string InvalidUrl = "The URL format is invalid.";
         }
     }
 }
