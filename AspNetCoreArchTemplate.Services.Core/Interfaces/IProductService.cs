@@ -12,7 +12,7 @@ namespace EatHealthy.Services.Core.Interfaces
     {
         Task<IEnumerable<ProductViewModel>> GetAllProductAsync();
 
-        Task<IEnumerable<ProductViewModel>> GetAllDelitedProductAsync();
+        Task<IEnumerable<ProductViewModel>> GetAllDeletedProductAsync();
 
         Task AddProductAsync(ProductFormInputModel inputModel);
 
