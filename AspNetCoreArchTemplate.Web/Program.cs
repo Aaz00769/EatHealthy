@@ -24,7 +24,7 @@ namespace EatHealthy.Web
                 });
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<AppUser>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = true;
                 })
