@@ -13,17 +13,17 @@ namespace AspNetCoreArchTemplate.Data.Configuration
     using static EatHealthy.Data.Common.EntityConsts.Day;
     public class DayConfiguration : IEntityTypeConfiguration<Day>
     {
-        public void Configure(EntityTypeBuilder<Day> builder)
+        public void Configure(EntityTypeBuilder<Day> entity)
         {
-            builder.HasKey(d => d.Id);
+            entity.HasKey(d => d.Id);
 
-            builder.Property(d => d.Date)
+            entity.Property(d => d.Date)
                 .IsRequired();
 
-            builder.Property(d => d.Note)
+            entity.Property(d => d.Note)
                 .HasMaxLength(NoteMaxLength);
 
-            builder.ToTable("Days")
+            entity.ToTable("Days")
                 .HasComment("Represents a user's day which contains meals");
         }
     }

@@ -2,31 +2,33 @@
 
 namespace EatHealthy.Services.Core
 {
+    using AspNetCoreArchTemplate.Data.Repository.Interfaces;
     using EatHealthy.Data;
+    using EatHealthy.Data.Models;
     using EatHealthy.Services.Core.Interfaces;
     using EatHealthy.Web.ViewModels.Product;
     using Microsoft.EntityFrameworkCore;
-    using EatHealthy.Data.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
     public class ProductService : IProductService
     {
-        private readonly EatHealthyDbContext _context;
-
-        public ProductService(EatHealthyDbContext context)
+        private readonly IProductRepository _productRepository; 
+        
+        public ProductService(IProductRepository context)
         {
-            _context = context;
+            _productRepository = context;
         }
 
         
 
         public async Task<IEnumerable<ProductViewModel>> GetAllProductAsync()
         {
-            IEnumerable<ProductViewModel> allProducts = await this._context
-                .Products
+            IEnumerable<ProductViewModel> allProducts = await this._productRepository
+                .AllAsNoTracking()
                 .Where(p => !p.IsDeleted)
                 .AsNoTracking()
                 .Select(p => new ProductViewModel()
@@ -44,34 +46,35 @@ namespace EatHealthy.Services.Core
 
         public async Task AddProductAsync(ProductFormInputModel inputModel)
         {
+            bool exists = await _productRepository
+                .All()
+                .AnyAsync(p => p.Name == inputModel.ProductName && !p.IsDeleted);
+
+            if (exists)
+            {
+                throw new InvalidOperationException("A product with this name already exists.");
+            }
+
             Product newProduct = new Product()
             {
                 Name = inputModel.ProductName,
                 Calories = inputModel.Calories,
-                Proteins=inputModel.Proteins,
-                Fats=inputModel.Fats,
-                Carbohydrates=inputModel.Carbohydrates
+                Proteins = inputModel.Proteins,
+                Fats = inputModel.Fats,
+                Carbohydrates = inputModel.Carbohydrates
             };
 
-            await this._context.Products.AddAsync(newProduct);
-            await this._context.SaveChangesAsync();
-
-
+            await _productRepository.AddAsync(newProduct);
+            await _productRepository.SaveChangesAsync();
         }
 
-        public async Task<bool> ProductExist(string name)
-        {
-            return await this._context.Products.AnyAsync(p => p.Name == name);
-        }
+
 
         public async Task EditProductAsync(Guid id, ProductFormInputModel inputModel)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-
+            var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
-            {
                 throw new InvalidOperationException("Product not found.");
-            }
 
             product.Name = inputModel.ProductName;
             product.Calories = inputModel.Calories;
@@ -79,13 +82,13 @@ namespace EatHealthy.Services.Core
             product.Fats = inputModel.Fats;
             product.Carbohydrates = inputModel.Carbohydrates;
 
-            await _context.SaveChangesAsync();
+            await _productRepository.UpdateAsync(product);
+            await _productRepository.SaveChangesAsync();
         }
 
         public async Task<ProductFormInputModel?> GetProductByIdAsync(Guid id)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-
+            var product = await _productRepository.GetByIdAsync(id);
             if (product == null) return null;
 
             return new ProductFormInputModel
@@ -101,57 +104,46 @@ namespace EatHealthy.Services.Core
 
         public async Task<bool> SoftDeletProductAsync(Guid id)
         {
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null || product.IsDeleted) return false;
 
-            Product? productToDelete = await this._context.Products.FirstOrDefaultAsync(p => p.Id == id);
-
-            if (productToDelete == null) return false;
-
-            productToDelete.IsDeleted=true;
-
-            await this._context.SaveChangesAsync();
-
+            await _productRepository.SoftDeleteAsync(product);
             return true;
-
         }
 
         public async Task<bool> HardDeleteProductAsync(Guid id)
         {
-            Product? productToDelete = await this._context.Products.FirstOrDefaultAsync(p => p.Id == id);
-            if (productToDelete == null) return false;
-            _context.Products.Remove(productToDelete);
-            await _context.SaveChangesAsync();
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null) return false;
 
+            await _productRepository.DeleteAsync(product);
+            await _productRepository.SaveChangesAsync();
             return true;
-
         }
+
 
         public async Task<IEnumerable<ProductViewModel>> GetAllDeletedProductAsync()
         {
-            IEnumerable<ProductViewModel> allProducts = await this._context
-              .Products
-              .Where(p => p.IsDeleted)
-              .AsNoTracking()
-              .Select(p => new ProductViewModel()
-              {
-                  Id = p.Id,
-                  Name = p.Name,
-                  Calories = p.Calories.ToString(),
-
-              })
-              .ToListAsync();
-
-
-            return allProducts;
+            return await _productRepository
+                .AllAsNoTracking()
+                .Where(p => p.IsDeleted)
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Calories = p.Calories.ToString()
+                })
+                .ToListAsync();
         }
 
         public async Task<bool> RestoreProductAsync(Guid id)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-
+            var product = await _productRepository.GetByIdAsync(id);
             if (product == null || !product.IsDeleted) return false;
 
             product.IsDeleted = false;
-            await _context.SaveChangesAsync();
+            await _productRepository.UpdateAsync(product);
+            await _productRepository.SaveChangesAsync();
             return true;
         }
     }

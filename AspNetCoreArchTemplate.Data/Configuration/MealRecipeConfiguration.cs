@@ -12,19 +12,19 @@ namespace AspNetCoreArchTemplate.Data.Configuration
     using System.Threading.Tasks;
     public class MealRecipeConfiguration : IEntityTypeConfiguration<MealRecipe>
     {
-        public void Configure(EntityTypeBuilder<MealRecipe> builder)
+        public void Configure(EntityTypeBuilder<MealRecipe> entity)
         {
-            builder.HasKey(mr => new { mr.MealId, mr.RecipeId });
+            entity.HasKey(mr => new { mr.MealId, mr.RecipeId });
 
-            builder.HasOne(mr => mr.Meal)
+            entity.HasOne(mr => mr.Meal)
                 .WithMany(m => m.MealRecipes)
                 .HasForeignKey(mr => mr.MealId);
 
-            builder.HasOne(mr => mr.Recipe)
+            entity.HasOne(mr => mr.Recipe)
                 .WithMany(r => r.MealRecipes)
                 .HasForeignKey(mr => mr.RecipeId);
 
-            builder.ToTable("MealRecipes")
+            entity.ToTable("MealRecipes")
                 .HasComment("Links a Recipe to a Meal");
         }
     }

@@ -12,19 +12,19 @@ namespace AspNetCoreArchTemplate.Data.Configuration
 
     public class DayMealConfiguration : IEntityTypeConfiguration<DayMeal>
     {
-        public void Configure(EntityTypeBuilder<DayMeal> builder)
+        public void Configure(EntityTypeBuilder<DayMeal> entity)
         {
-            builder.HasKey(dm => new { dm.DayId, dm.MealId });
+            entity.HasKey(dm => new { dm.DayId, dm.MealId });
 
-            builder.HasOne(dm => dm.Day)
+            entity.HasOne(dm => dm.Day)
                 .WithMany(d => d.DayMeals)
                 .HasForeignKey(dm => dm.DayId);
 
-            builder.HasOne(dm => dm.Meal)
+            entity.HasOne(dm => dm.Meal)
                 .WithMany(m => m.DayMeals)
                 .HasForeignKey(dm => dm.MealId);
 
-            builder.ToTable("DayMeals")
+            entity.ToTable("DayMeals")
                 .HasComment("Links a Meal to a Day, allowing reuse across days");
         }
     }

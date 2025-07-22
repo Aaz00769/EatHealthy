@@ -14,38 +14,43 @@ namespace EatHealthy.Data.Configuration
     using static Common.EntityConsts.Recipie;
     public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
     {
-        public void Configure(EntityTypeBuilder<Recipe> builder)
+        public void Configure(EntityTypeBuilder<Recipe> entity)
         {
-            builder
+            entity
                 .HasKey(r => r.Id);
 
-            builder
+            entity
                 .Property(r => r.Name)
                 .IsRequired()
                 .HasMaxLength(NameMaxLength);
 
-            builder
+            entity
                 .Property(r => r.Description)
                 .HasMaxLength(DescriptionLenght);
 
-            builder
+            entity
                 .Property(r => r.IsPublic)
                 .IsRequired();
 
-            builder
+            entity
                 .Property(r => r.IsApprovedByAdmin)
                 .IsRequired();
 
-            builder
+            entity
                 .Property(r => r.CreatedOn)
                 .IsRequired();
 
-            builder
+            entity
                 .Property(r => r.ModifiedOn);
 
-            builder
+            entity
                 .ToTable("Recipes")
                 .HasComment("User-created recipe");
+
+            entity.Property(p => p.IsDeleted)
+    .HasDefaultValue(false)
+    .IsRequired();
+
         }
     }
 }

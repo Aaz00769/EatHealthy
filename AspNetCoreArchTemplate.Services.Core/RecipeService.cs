@@ -2,47 +2,45 @@
 
 namespace EatHealthy.Services.Core
 {
+    using AspNetCoreArchTemplate.Data.Repository;
+    using AspNetCoreArchTemplate.Data.Repository.Interfaces;
     using EatHealthy.Data;
     using EatHealthy.Data.Models;
     using EatHealthy.Services.Core.Interfaces;
     using EatHealthy.Web.ViewModels.Product;
+    using EatHealthy.Web.ViewModels.Recipe;
+    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using EatHealthy.Web.ViewModels.Recipe;
-    using Microsoft.EntityFrameworkCore;
 
     public class RecipeService : IRecipeService
     {
-        private readonly EatHealthyDbContext _context;
+        private readonly IRecipeRepository _recipeRepository;
 
-        public RecipeService(EatHealthyDbContext context)
+        public RecipeService(IRecipeRepository context)
         {
-            _context = context;
+            _recipeRepository = context;
         }
 
         public async Task<IEnumerable<RecipeViewModel>> GetAllRecipesAsync()
         {
-            return await _context.Recipes
-                .Where(r => !r.IsDeleted)
-                .Include(r => r.RecipeProducts)
-                    .ThenInclude(rp => rp.Product)
-                .Select(r => new RecipeViewModel
-                {
-                    Id = r.Id,
-                    Name = r.Name,
-                    TotalCalories = r.RecipeProducts.Sum(rp => rp.Product.Calories * rp.Quantity)
-                })
-                .ToListAsync();
+            var recipes = await _recipeRepository.GetAllWithProductsAsync();
+
+            return recipes.Select(r => new RecipeViewModel
+            {
+                Id = r.Id,
+                Name = r.Name,
+                TotalCalories = r.RecipeProducts.Sum(rp => rp.Product.Calories * rp.Quantity)
+            });
         }
 
         public async Task<RecipeFormInputModel?> GetByIdAsync(Guid id)
         {
-            var recipe = await _context.Recipes
-                .Include(r => r.RecipeProducts)
-                .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
+            var recipe = await _recipeRepository.GetByIdWithProductsAsync(id);
+            if (recipe == null) return null;
 
             if (recipe == null) return null;
 
@@ -69,25 +67,21 @@ namespace EatHealthy.Services.Core
                 RecipeProducts = inputModel.SelectedProducts.Select(rp => new RecipeProduct
                 {
                     ProductId = rp.ProductId,
-                    Quantity=rp.Quantity
+                    Quantity = rp.Quantity
                 }).ToList()
             };
 
-            await _context.Recipes.AddAsync(newRecipe);
-            await _context.SaveChangesAsync();
+            await _recipeRepository.AddRecipeAsync(newRecipe);
         }
 
         public async Task EditRecipeAsync(Guid id, RecipeFormInputModel model)
         {
-            var recipe = await _context.Recipes
-                .Include(r => r.RecipeProducts)
-                .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
+            var recipe = await _recipeRepository.GetByIdWithProductsAsync(id);
+
 
             if (recipe == null) throw new InvalidOperationException("Recipe not found.");
 
             recipe.Name = model.Name;
-
-            // Clear and re-add RecipeProducts
             recipe.RecipeProducts.Clear();
             recipe.RecipeProducts = model.SelectedProducts.Select(p => new RecipeProduct
             {
@@ -95,19 +89,12 @@ namespace EatHealthy.Services.Core
                 Quantity = p.Quantity
             }).ToList();
 
-            await _context.SaveChangesAsync();
+            await _recipeRepository.EditRecipeAsync(recipe);
         }
 
         public async Task<bool> SoftDeleteRecipeAsync(Guid id)
         {
-            var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == id);
-
-            if (recipe == null) return false;
-
-            recipe.IsDeleted = true;
-            await _context.SaveChangesAsync();
-
-            return true;
+            return await _recipeRepository.SoftDeleteAsync(id);
         }
     }
 }

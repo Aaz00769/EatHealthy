@@ -6,6 +6,8 @@ namespace EatHealthy.Web
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using AspNetCoreArchTemplate.Data.Repository.Interfaces;
+    using AspNetCoreArchTemplate.Data.Repository;
 
     public class Program
     {
@@ -30,6 +32,11 @@ namespace EatHealthy.Web
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddTransient<IProductService, ProductService>();
+
+
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+
 
             WebApplication? app = builder.Build();
             

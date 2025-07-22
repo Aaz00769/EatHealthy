@@ -16,8 +16,6 @@ namespace EatHealthy.Services.Core.Interfaces
 
         Task AddProductAsync(ProductFormInputModel inputModel);
 
-        Task<bool> ProductExist(string name);
-
         Task EditProductAsync(Guid id, ProductFormInputModel inputModel);
 
         Task<ProductFormInputModel?> GetProductByIdAsync(Guid id);

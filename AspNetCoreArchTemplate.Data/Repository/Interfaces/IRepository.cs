@@ -18,6 +18,8 @@ namespace AspNetCoreArchTemplate.Data.Repository.Interfaces
 
         IQueryable<T> All(); // No filter
 
+        IQueryable<T> AllAsNoTracking();
+
         Task AddAsync(T entity);
 
         Task UpdateAsync(T entity);

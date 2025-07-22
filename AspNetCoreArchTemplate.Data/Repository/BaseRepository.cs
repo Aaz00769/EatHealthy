@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace AspNetCoreArchTemplate.Data.Repository
 {
-    internal class BaseRepository<T, TId> : IRepository<T, TId> where T : class
+    public abstract class BaseRepository<T, TId> : IRepository<T, TId> where T : class
     {
-        private readonly EatHealthyDbContext _context;
-        private readonly DbSet<T> _dbSet;
+        protected readonly EatHealthyDbContext _context;
+        protected readonly DbSet<T> _dbSet;
 
         public BaseRepository(EatHealthyDbContext context)
         {

@@ -13,20 +13,20 @@ namespace AspNetCoreArchTemplate.Data.Configuration
     using static EatHealthy.Data.Common.EntityConsts.Meal;
     public class MealConfiguration : IEntityTypeConfiguration<Meal>
     {
-        public void Configure(EntityTypeBuilder<Meal> builder)
+        public void Configure(EntityTypeBuilder<Meal> entity)
         {
-            builder.HasKey(m => m.Id);
+            entity.HasKey(m => m.Id);
 
-            builder.Property(m => m.Name)
+            entity.Property(m => m.Name)
                 .IsRequired()
                 .HasMaxLength(NameMaxLength);
 
-            builder.Property(m => m.Note)
+            entity.Property(m => m.Note)
                 .HasMaxLength(NoteMaxLength);
 
-            builder.Property(m => m.TimeEaten);
+            entity.Property(m => m.TimeEaten);
 
-            builder.ToTable("Meals")
+            entity.ToTable("Meals")
                 .HasComment("A specific meal in a day (e.g., breakfast, lunch, dinner)");
         }
     }

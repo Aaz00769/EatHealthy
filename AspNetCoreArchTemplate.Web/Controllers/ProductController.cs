@@ -39,29 +39,20 @@ namespace EatHealthy.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct(ProductFormInputModel inputModel)
         {
-            if(!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return this.View(inputModel);
-            }
-           
-            bool exists=await this._productService.ProductExist(inputModel.ProductName);
-
-            if (exists) 
-            {
-                this.ModelState.AddModelError(nameof(inputModel.ProductName), "A product with this name already exists.");
-                return this.View(inputModel);
+                return View(inputModel);
             }
 
             try
             {
-                await this._productService.AddProductAsync(inputModel);
-
+                await _productService.AddProductAsync(inputModel);
                 return RedirectToAction(nameof(ShowProducts));
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                this.ModelState.AddModelError(string.Empty,e.Message);
-                return this.View(inputModel);
+                ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
+                return View(inputModel);
             }
         }
         [HttpGet]
