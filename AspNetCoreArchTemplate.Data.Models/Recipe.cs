@@ -23,6 +23,7 @@ namespace EatHealthy.Data.Models
 
         [Comment("ID of the user who created this recipe")]
         public Guid CreatedByUserId { get; set; }
+        public AppUser CreatedByUser { get; set; } = null!;
 
         [Comment("Used to check if item is Soft Delited")]
         public bool IsDeleted { get; set; } = false;

@@ -48,8 +48,8 @@ namespace EatHealthy.Data.Configuration
                 .HasComment("User-created recipe");
 
             entity.Property(p => p.IsDeleted)
-    .HasDefaultValue(false)
-    .IsRequired();
+              .HasDefaultValue(false)
+              .IsRequired();
 
         }
     }

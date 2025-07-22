@@ -44,6 +44,7 @@ namespace EatHealthy.Data.Configuration
                   .HasDefaultValue(false)
                   .IsRequired();
 
+            
         }
     }
 }

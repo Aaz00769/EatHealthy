@@ -23,6 +23,15 @@ namespace AspNetCoreArchTemplate.Data.Configuration
             entity.Property(d => d.Note)
                 .HasMaxLength(NoteMaxLength);
 
+            entity.Property(d => d.IsCompleted)
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            entity.HasOne(d => d.CreatedByUser)
+                  .WithMany(u => u.Days)
+                  .HasForeignKey(d => d.CreatedByUserId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
             entity.ToTable("Days")
                 .HasComment("Represents a user's day which contains meals");
         }

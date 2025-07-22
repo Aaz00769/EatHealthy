@@ -1,13 +1,13 @@
 namespace EatHealthy.Web
 {
+    using AspNetCoreArchTemplate.Data.Repository;
+    using AspNetCoreArchTemplate.Data.Repository.Interfaces;
+    using Data;
+    using EatHealthy.Data.Models;
     using EatHealthy.Services.Core;
     using EatHealthy.Services.Core.Interfaces;
-    using Data;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-    using AspNetCoreArchTemplate.Data.Repository.Interfaces;
-    using AspNetCoreArchTemplate.Data.Repository;
 
     public class Program
     {
@@ -24,7 +24,7 @@ namespace EatHealthy.Web
                 });
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services
-                .AddDefaultIdentity<AppUser>(options =>
+                .AddIdentity<AppUser, IdentityRole<Guid>>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = true;
                 })
@@ -32,7 +32,7 @@ namespace EatHealthy.Web
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddTransient<IProductService, ProductService>();
-
+            builder.Services.AddRazorPages();
 
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();

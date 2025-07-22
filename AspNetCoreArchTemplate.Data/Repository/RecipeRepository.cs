@@ -51,7 +51,7 @@ namespace AspNetCoreArchTemplate.Data.Repository
 
         public async Task EditRecipeAsync(Recipe recipe)
         {
-            this.Update(recipe);      // synchronous
+            this.UpdateAsync(recipe);      // synchronous
             await this.SaveChangesAsync(); // async save
         }
 

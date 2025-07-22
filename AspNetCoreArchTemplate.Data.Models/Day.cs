@@ -19,9 +19,9 @@ namespace EatHealthy.Data.Models
         [Comment("Date this plan is for (e.g., 2025-07-21)")]
         public DateTime Date { get; set; }
 
-        [Comment("User that owns this day plan")]
-        public Guid UserId { get; set; }
-
+        [Comment("ID of the user who created this Day")]
+        public Guid CreatedByUserId { get; set; }
+        public AppUser CreatedByUser { get; set; } = null!;
         [Comment("Whether the user has marked this day as completed")]
         public bool IsCompleted { get; set; } = false;
 

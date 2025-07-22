@@ -16,7 +16,9 @@ namespace EatHealthy.Data.Models
         [Comment("Name of the meal (e.g., Breakfast, Snack, Post-Workout)")]
         public string Name { get; set; }
 
-        
+        [Comment("ID of the user who created this meal")]
+        public Guid CreatedByUserId { get; set; }
+        public AppUser CreatedByUser { get; set; } = null!;
 
         [Comment("Optional note (e.g., mood, hunger level, etc.)")]
         public string? Note { get; set; }

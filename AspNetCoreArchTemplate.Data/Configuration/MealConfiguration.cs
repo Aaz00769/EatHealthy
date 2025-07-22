@@ -28,6 +28,11 @@ namespace AspNetCoreArchTemplate.Data.Configuration
 
             entity.ToTable("Meals")
                 .HasComment("A specific meal in a day (e.g., breakfast, lunch, dinner)");
+
+            entity.HasOne(d => d.CreatedByUser)
+      .WithMany(u => u.Meals)
+      .HasForeignKey(d => d.CreatedByUserId)
+      .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EatHealthy.Data.Migrations
+namespace AspNetCoreArchTemplate.Data.Migrations
 {
     [DbContext(typeof(EatHealthyDbContext))]
-    [Migration("20250722075006_AddedColums")]
-    partial class AddedColums
+    [Migration("20250722154923_InitialidentityCreate")]
+    partial class InitialidentityCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,72 @@ namespace EatHealthy.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EatHealthy.Data.Models.AppUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("EatHealthy.Data.Models.Day", b =>
                 {
                     b.Property<Guid>("Id")
@@ -32,12 +98,18 @@ namespace EatHealthy.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasComment("Unique identifier for the day");
 
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasComment("ID of the user who created this Day");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2")
                         .HasComment("Date this plan is for (e.g., 2025-07-21)");
 
                     b.Property<bool>("IsCompleted")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
+                        .HasDefaultValue(false)
                         .HasComment("Whether the user has marked this day as completed");
 
                     b.Property<string>("Note")
@@ -45,11 +117,9 @@ namespace EatHealthy.Data.Migrations
                         .HasColumnType("nvarchar(1000)")
                         .HasComment("Optional description (e.g., chopped, grilled, peeled)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasComment("User that owns this day plan");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("Days", null, t =>
                         {
@@ -92,6 +162,10 @@ namespace EatHealthy.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasComment("Unique identifier for the meal");
 
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasComment("ID of the user who created this meal");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -108,6 +182,8 @@ namespace EatHealthy.Data.Migrations
                         .HasComment("Timestamp when the meal was consumed (optional)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("Meals", null, t =>
                         {
@@ -188,343 +264,343 @@ namespace EatHealthy.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7b538df2-c13e-479d-b219-e5984685bb75"),
+                            Id = new Guid("86425828-9f1a-45da-ae34-780ce4682c43"),
                             Calories = 52,
                             IsDeleted = false,
                             Name = "Apple"
                         },
                         new
                         {
-                            Id = new Guid("47aa570e-bddf-4cf4-bdfc-2a2feb15757b"),
+                            Id = new Guid("d07a2589-e704-4171-9ead-386e49ecb992"),
                             Calories = 89,
                             IsDeleted = false,
                             Name = "Banana"
                         },
                         new
                         {
-                            Id = new Guid("2dabe2a8-6e03-4a5c-ae9e-d960cc4815b0"),
+                            Id = new Guid("88486682-23a1-4261-b958-d31b7db661c4"),
                             Calories = 41,
                             IsDeleted = false,
                             Name = "Carrot"
                         },
                         new
                         {
-                            Id = new Guid("23cc151d-2b36-448c-a31c-f9bc5b04c9ca"),
+                            Id = new Guid("e4dd33c0-f1be-4c39-a922-59a53d016630"),
                             Calories = 34,
                             IsDeleted = false,
                             Name = "Broccoli"
                         },
                         new
                         {
-                            Id = new Guid("6ab5f54f-bf9d-4cd6-907d-05cbc682bdeb"),
+                            Id = new Guid("ba9fc0c3-61aa-4223-b98a-fd53032c4c32"),
                             Calories = 165,
                             IsDeleted = false,
                             Name = "Chicken Breast"
                         },
                         new
                         {
-                            Id = new Guid("1110d358-6535-4442-8123-cf1417a49006"),
+                            Id = new Guid("7f6ec167-5675-483b-87f6-382fcc7fe06f"),
                             Calories = 208,
                             IsDeleted = false,
                             Name = "Salmon"
                         },
                         new
                         {
-                            Id = new Guid("574f8aa6-07d8-4d88-9dc3-13205e82d301"),
+                            Id = new Guid("aae46cc3-a20b-4b15-807a-48dc7efd29df"),
                             Calories = 155,
                             IsDeleted = false,
                             Name = "Egg"
                         },
                         new
                         {
-                            Id = new Guid("d7ba5a35-b4e6-48b6-8839-ef62a26851e6"),
+                            Id = new Guid("b1f8ae26-1b60-489d-9388-550c5e8ac83e"),
                             Calories = 579,
                             IsDeleted = false,
                             Name = "Almonds"
                         },
                         new
                         {
-                            Id = new Guid("26097e2b-9d02-4adc-9c44-38a033b042c1"),
+                            Id = new Guid("561e06e0-018f-4f09-8775-026f07f39575"),
                             Calories = 123,
                             IsDeleted = false,
                             Name = "Brown Rice"
                         },
                         new
                         {
-                            Id = new Guid("0c4d3abf-c8c9-415f-83f2-d63fd66ef471"),
+                            Id = new Guid("98651fb6-9a15-458b-a4de-662b7fe95d9d"),
                             Calories = 389,
                             IsDeleted = false,
                             Name = "Oats"
                         },
                         new
                         {
-                            Id = new Guid("86dd117e-c4e3-4607-bfd3-df940efb713f"),
+                            Id = new Guid("a919b91a-5cea-44aa-b541-25c3b6f1c4a0"),
                             Calories = 61,
                             IsDeleted = false,
                             Name = "Milk (Whole)"
                         },
                         new
                         {
-                            Id = new Guid("13cda455-39fd-4a7e-9013-c86dec0aa0d6"),
+                            Id = new Guid("51e2d800-22f6-4101-938c-131cc4d51c88"),
                             Calories = 59,
                             IsDeleted = false,
                             Name = "Greek Yogurt"
                         },
                         new
                         {
-                            Id = new Guid("f5292628-930f-41cb-bc21-3f4c13a10454"),
+                            Id = new Guid("e85b319b-2c9c-4ee5-bd39-8baf84528ba2"),
                             Calories = 403,
                             IsDeleted = false,
                             Name = "Cheddar Cheese"
                         },
                         new
                         {
-                            Id = new Guid("5519375c-648f-4ff3-ae73-542327173005"),
+                            Id = new Guid("77ec2562-1d33-4f1b-ac84-44cac043f936"),
                             Calories = 23,
                             IsDeleted = false,
                             Name = "Spinach"
                         },
                         new
                         {
-                            Id = new Guid("2c3be47f-fd07-403c-b3d6-4f8e932d43c7"),
+                            Id = new Guid("641a01b3-7aac-4145-ac84-7244cda17f67"),
                             Calories = 18,
                             IsDeleted = false,
                             Name = "Tomato"
                         },
                         new
                         {
-                            Id = new Guid("5715eea8-f3f7-4024-9dac-9ea8661cc159"),
+                            Id = new Guid("f822a772-b238-4cbe-9d63-39af63df2f91"),
                             Calories = 77,
                             IsDeleted = false,
                             Name = "Potato"
                         },
                         new
                         {
-                            Id = new Guid("3ccf0323-254e-4683-88f8-914931caf869"),
+                            Id = new Guid("75c6030a-c996-44a7-926e-2e7da3c29538"),
                             Calories = 86,
                             IsDeleted = false,
                             Name = "Sweet Potato"
                         },
                         new
                         {
-                            Id = new Guid("0b0259e8-4408-4aa5-90a2-401cdc00c362"),
+                            Id = new Guid("c58becf0-10c2-4794-9a70-92c5a44fb87e"),
                             Calories = 250,
                             IsDeleted = false,
                             Name = "Beef (Lean)"
                         },
                         new
                         {
-                            Id = new Guid("366c8781-22a3-407b-958c-499cdf9c35fd"),
+                            Id = new Guid("05770f97-a16b-422c-90bc-aa35c1eff66d"),
                             Calories = 132,
                             IsDeleted = false,
                             Name = "Tuna (Canned in Water)"
                         },
                         new
                         {
-                            Id = new Guid("4c3ce619-14c8-4513-8942-e663c0f43341"),
+                            Id = new Guid("9e491b9e-6558-4918-885f-97613d79a5ba"),
                             Calories = 99,
                             IsDeleted = false,
                             Name = "Shrimp"
                         },
                         new
                         {
-                            Id = new Guid("951705dd-b28f-4259-b9c3-070ceffb5936"),
+                            Id = new Guid("7383a44e-e18e-43aa-8832-11d5f9f49c48"),
                             Calories = 76,
                             IsDeleted = false,
                             Name = "Tofu"
                         },
                         new
                         {
-                            Id = new Guid("da14b967-4614-4009-9313-3da4b3a327d4"),
+                            Id = new Guid("8993c808-9d99-4b5e-b7bd-60ae434d8588"),
                             Calories = 116,
                             IsDeleted = false,
                             Name = "Lentils"
                         },
                         new
                         {
-                            Id = new Guid("9cb3fc0d-93f4-4f83-8410-d9f59fc96357"),
+                            Id = new Guid("c471023f-1c6c-411d-97bc-ff07485168fc"),
                             Calories = 164,
                             IsDeleted = false,
                             Name = "Chickpeas"
                         },
                         new
                         {
-                            Id = new Guid("f046f100-4532-48ee-bfcf-d15212b9d957"),
+                            Id = new Guid("6aa26ed7-5543-4cb3-996c-0b7c2fb769e8"),
                             Calories = 127,
                             IsDeleted = false,
                             Name = "Kidney Beans"
                         },
                         new
                         {
-                            Id = new Guid("66fbc619-614a-4100-af87-f1c6ca629a6f"),
+                            Id = new Guid("a8c4faa7-489c-4461-85ee-e52753f30679"),
                             Calories = 16,
                             IsDeleted = false,
                             Name = "Cucumber"
                         },
                         new
                         {
-                            Id = new Guid("a17c9c65-1a15-489f-b32f-41cb191a56a7"),
+                            Id = new Guid("fcca6803-66f8-4d93-b9d7-9331bc31899e"),
                             Calories = 15,
                             IsDeleted = false,
                             Name = "Lettuce"
                         },
                         new
                         {
-                            Id = new Guid("3a325340-089a-4f92-a3b3-414ab2910ac5"),
+                            Id = new Guid("215326b5-f336-4171-9d4c-c767bc6abb19"),
                             Calories = 17,
                             IsDeleted = false,
                             Name = "Zucchini"
                         },
                         new
                         {
-                            Id = new Guid("2db37d9d-ac74-4b29-8777-2e9e5ed88fd1"),
+                            Id = new Guid("cc6ed89a-d447-469b-ba42-6878bd3e3bb1"),
                             Calories = 22,
                             IsDeleted = false,
                             Name = "Mushrooms"
                         },
                         new
                         {
-                            Id = new Guid("df07d7f0-d39e-4540-bcf8-22adcd3df536"),
+                            Id = new Guid("7978efc9-f408-4a63-a054-7ef220386f78"),
                             Calories = 160,
                             IsDeleted = false,
                             Name = "Avocado"
                         },
                         new
                         {
-                            Id = new Guid("4f819ebb-aeab-44a8-8ba9-2890c095f02a"),
+                            Id = new Guid("dfe6702a-e5f2-43a7-a8a2-463265b6f611"),
                             Calories = 50,
                             IsDeleted = false,
                             Name = "Pineapple"
                         },
                         new
                         {
-                            Id = new Guid("8c2f3566-5642-41f3-83df-3c861035d5bd"),
+                            Id = new Guid("cabc8591-514f-480b-bb0c-6ef75888e554"),
                             Calories = 47,
                             IsDeleted = false,
                             Name = "Orange"
                         },
                         new
                         {
-                            Id = new Guid("8c7f023d-5399-4ca0-9756-0d02fd2e5594"),
+                            Id = new Guid("18220028-e2a5-49c6-b2a2-91887b2cf113"),
                             Calories = 57,
                             IsDeleted = false,
                             Name = "Blueberries"
                         },
                         new
                         {
-                            Id = new Guid("89883e4d-a501-4285-a8b9-adb900b602e6"),
+                            Id = new Guid("ebe0df5c-56e3-4cb6-b903-7e787427be70"),
                             Calories = 32,
                             IsDeleted = false,
                             Name = "Strawberries"
                         },
                         new
                         {
-                            Id = new Guid("c9a8c595-b6d6-4e27-9445-20f1f378d826"),
+                            Id = new Guid("80362d0a-e524-4f9c-8d91-3ef15dc519ca"),
                             Calories = 30,
                             IsDeleted = false,
                             Name = "Watermelon"
                         },
                         new
                         {
-                            Id = new Guid("3fd72187-a2f0-43ac-8b63-d785ec4a3e95"),
+                            Id = new Guid("28f4f59c-bcf1-400a-bd8a-aa509e25d736"),
                             Calories = 588,
                             IsDeleted = false,
                             Name = "Peanut Butter"
                         },
                         new
                         {
-                            Id = new Guid("d5f3a649-8aa8-4de5-bf40-2423cd15b3b4"),
+                            Id = new Guid("426b58ce-806e-468c-b066-1b906ff682a1"),
                             Calories = 98,
                             IsDeleted = false,
                             Name = "Cottage Cheese"
                         },
                         new
                         {
-                            Id = new Guid("f5668f47-315f-4cec-9e24-43b91dd0af10"),
+                            Id = new Guid("f5abc0c7-c33e-4eac-82a0-9ff21bd5790f"),
                             Calories = 120,
                             IsDeleted = false,
                             Name = "Quinoa"
                         },
                         new
                         {
-                            Id = new Guid("6b0b5fea-37a3-43da-b8bb-84ffa6163b6a"),
+                            Id = new Guid("e123af4a-53e2-46b2-b98a-3e5dd0cf5e20"),
                             Calories = 354,
                             IsDeleted = false,
                             Name = "Barley"
                         },
                         new
                         {
-                            Id = new Guid("e203dc6f-ccff-4066-858d-3b6071779f90"),
+                            Id = new Guid("d116f811-ebf3-46e5-8cae-10dfd0d2455e"),
                             Calories = 26,
                             IsDeleted = false,
                             Name = "Pumpkin"
                         },
                         new
                         {
-                            Id = new Guid("ce54b10c-605c-4e05-9f32-af6d171fe28f"),
+                            Id = new Guid("05e5ba84-5358-44e8-8a25-b6977839e016"),
                             Calories = 81,
                             IsDeleted = false,
                             Name = "Green Peas"
                         },
                         new
                         {
-                            Id = new Guid("ccb54cc7-c929-4084-ad23-ec3056c7c282"),
+                            Id = new Guid("970a87c5-ebfb-4d64-a335-5564a75f9a96"),
                             Calories = 25,
                             IsDeleted = false,
                             Name = "Cauliflower"
                         },
                         new
                         {
-                            Id = new Guid("3917d6fb-ed55-4fe0-9bda-3c5347ba22f3"),
+                            Id = new Guid("fe2baa79-9a71-4594-8915-61901b6c9e5a"),
                             Calories = 25,
                             IsDeleted = false,
                             Name = "Eggplant"
                         },
                         new
                         {
-                            Id = new Guid("b2bfe132-d446-4b4f-90f3-64c7800f660d"),
+                            Id = new Guid("56757ff0-d3dc-4051-af61-672e8551faf1"),
                             Calories = 52,
                             IsDeleted = false,
                             Name = "Raspberries"
                         },
                         new
                         {
-                            Id = new Guid("8d93c912-20f8-4bf9-b180-471858e5cfe7"),
+                            Id = new Guid("66033573-fdda-4d5e-aa4b-673cc6b108ac"),
                             Calories = 132,
                             IsDeleted = false,
                             Name = "Black Beans"
                         },
                         new
                         {
-                            Id = new Guid("c054149c-8864-4dab-b998-78ea3025a9ac"),
+                            Id = new Guid("2d7c3a52-948a-445e-8285-aa5d304c69b4"),
                             Calories = 230,
                             IsDeleted = false,
                             Name = "Coconut Milk"
                         },
                         new
                         {
-                            Id = new Guid("da2b9b75-4e3b-47d8-a67c-a4fe3b344c04"),
+                            Id = new Guid("2d5b8c03-c762-43fe-8917-303d94653046"),
                             Calories = 277,
                             IsDeleted = false,
                             Name = "Dates"
                         },
                         new
                         {
-                            Id = new Guid("b997a082-1b43-4087-a032-7d28b0869013"),
+                            Id = new Guid("281789be-0e78-4da7-96d8-e4827bca5e33"),
                             Calories = 304,
                             IsDeleted = false,
                             Name = "Honey"
                         },
                         new
                         {
-                            Id = new Guid("b7d7e122-f2ea-49dd-8fcb-96bbcbde99d1"),
+                            Id = new Guid("8b4958d1-40f8-4e9f-93db-32c5e1b08290"),
                             Calories = 1,
                             IsDeleted = false,
                             Name = "Green Tea"
                         },
                         new
                         {
-                            Id = new Guid("0c616f08-1893-494c-9062-224226e30f45"),
+                            Id = new Guid("c635e243-ef45-4683-8bd2-31872bc6fcd7"),
                             Calories = 598,
                             IsDeleted = false,
                             Name = "Dark Chocolate (85%)"
@@ -580,6 +656,8 @@ namespace EatHealthy.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedByUserId");
+
                     b.ToTable("Recipes", null, t =>
                         {
                             t.HasComment("User-created recipe");
@@ -626,10 +704,11 @@ namespace EatHealthy.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -653,7 +732,7 @@ namespace EatHealthy.Data.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -667,9 +746,8 @@ namespace EatHealthy.Data.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -678,72 +756,7 @@ namespace EatHealthy.Data.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -757,9 +770,8 @@ namespace EatHealthy.Data.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -768,22 +780,19 @@ namespace EatHealthy.Data.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -792,13 +801,13 @@ namespace EatHealthy.Data.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -807,18 +816,16 @@ namespace EatHealthy.Data.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -826,6 +833,17 @@ namespace EatHealthy.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("EatHealthy.Data.Models.Day", b =>
+                {
+                    b.HasOne("EatHealthy.Data.Models.AppUser", "CreatedByUser")
+                        .WithMany("Days")
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
                 });
 
             modelBuilder.Entity("EatHealthy.Data.Models.DayMeal", b =>
@@ -847,6 +865,17 @@ namespace EatHealthy.Data.Migrations
                     b.Navigation("Meal");
                 });
 
+            modelBuilder.Entity("EatHealthy.Data.Models.Meal", b =>
+                {
+                    b.HasOne("EatHealthy.Data.Models.AppUser", "CreatedByUser")
+                        .WithMany("Meals")
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+                });
+
             modelBuilder.Entity("EatHealthy.Data.Models.MealRecipe", b =>
                 {
                     b.HasOne("EatHealthy.Data.Models.Meal", "Meal")
@@ -864,6 +893,17 @@ namespace EatHealthy.Data.Migrations
                     b.Navigation("Meal");
 
                     b.Navigation("Recipe");
+                });
+
+            modelBuilder.Entity("EatHealthy.Data.Models.Recipe", b =>
+                {
+                    b.HasOne("EatHealthy.Data.Models.AppUser", "CreatedByUser")
+                        .WithMany("Recipes")
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
                 });
 
             modelBuilder.Entity("EatHealthy.Data.Models.RecipeProduct", b =>
@@ -885,55 +925,64 @@ namespace EatHealthy.Data.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("EatHealthy.Data.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("EatHealthy.Data.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("EatHealthy.Data.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("EatHealthy.Data.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EatHealthy.Data.Models.AppUser", b =>
+                {
+                    b.Navigation("Days");
+
+                    b.Navigation("Meals");
+
+                    b.Navigation("Recipes");
                 });
 
             modelBuilder.Entity("EatHealthy.Data.Models.Day", b =>

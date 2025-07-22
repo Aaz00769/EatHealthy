@@ -42,7 +42,7 @@ namespace EatHealthy.Services.Core
             var recipe = await _recipeRepository.GetByIdWithProductsAsync(id);
             if (recipe == null) return null;
 
-            if (recipe == null) return null;
+
 
             return new RecipeFormInputModel
             {

@@ -17,6 +17,8 @@ namespace EatHealthy.Data.Models
         [Comment("Product ID")]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        
+
         [Comment("Product name")]
         public string Name { get; set; } = null!;
 
