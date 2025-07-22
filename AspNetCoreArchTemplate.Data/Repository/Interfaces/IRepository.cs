@@ -12,8 +12,6 @@ namespace AspNetCoreArchTemplate.Data.Repository.Interfaces
     {
         Task<T?> GetByIdAsync(TId id);
 
-        Task<T?> SingleOrDefaultAsync(Func<T, bool> predicate);
-
         Task<T?> SingleOrDefaultAsync(Expression<Func<T, bool>> predicate);
 
         Task<IEnumerable<T>> GetAllAsync();
