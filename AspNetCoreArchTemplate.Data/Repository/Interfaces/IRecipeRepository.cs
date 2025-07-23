@@ -9,12 +9,13 @@ namespace AspNetCoreArchTemplate.Data.Repository.Interfaces
 {
     public interface IRecipeRepository:IRepository<Recipe,Guid>
     {
-        Task<Recipe?> GetDetailedByIdAsync(Guid id);
-        Task<Recipe?> GetByIdWithProductsAsync(Guid id);
-        Task<IEnumerable<Recipe>> GetAllWithProductsAsync();
+        Task<Recipe?> GetDetailedByIdAsync( Guid id);
+        Task<Recipe?> GetByIdWithProductsAsync(Guid userId, Guid id);
+        Task<IEnumerable<Recipe>> GetAllPublicWithProductsAsync();
         Task AddRecipeAsync(Recipe recipe);
         Task EditRecipeAsync(Recipe recipe);
         Task<bool> SoftDeleteAsync(Guid id);
+        Task RemoveAllProductsFromRecipeAsync(Guid recipeId);
 
     }
 }

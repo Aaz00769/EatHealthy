@@ -20,29 +20,33 @@ namespace AspNetCoreArchTemplate.Data.Repository
 
 
         }
-        public async Task<Recipe?> GetDetailedByIdAsync(Guid id)
-        {
-            return await this.All()
-                .Include(r => r.RecipeProducts)
-                    .ThenInclude(rp => rp.Product)
-                .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
-        }
-        public async Task<Recipe?> GetByIdWithProductsAsync(Guid id)
-        {
-            return await this.All()
-                .Include(r => r.RecipeProducts)
-                    .ThenInclude(rp => rp.Product)
-                .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
-        }
-        public async Task<IEnumerable<Recipe>> GetAllWithProductsAsync()
+        //returns a list of all publicated Recepies
+        public async Task<IEnumerable<Recipe>> GetAllPublicWithProductsAsync()
         {
             return await this.AllAsNoTracking()
-                .Where(r => !r.IsDeleted)
+                .Where(r => !r.IsDeleted && r.IsPublic)
                 .Include(r => r.RecipeProducts)
                     .ThenInclude(rp => rp.Product)
                 .ToListAsync();
         }
-
+        public async Task<Recipe?> GetDetailedByIdAsync( Guid id)
+        {
+            return await this.All()
+                .Include(r => r.RecipeProducts)
+                    .ThenInclude(rp => rp.Product)
+                .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
+        }
+        //returns a recepie witha all its products
+        public async Task<Recipe?> GetByIdWithProductsAsync(Guid userId, Guid id)
+        {
+            return await this.All()
+                .Where(r => r.CreatedByUserId == userId)
+                .Include(r => r.RecipeProducts)
+                    .ThenInclude(rp => rp.Product)
+                .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
+        }
+       
+        //Adds a recepie 
         public async Task AddRecipeAsync(Recipe recipe)
         {
             await this.AddAsync(recipe);
@@ -63,6 +67,21 @@ namespace AspNetCoreArchTemplate.Data.Repository
             recipe.IsDeleted = true;
             await this.SaveChangesAsync();
             return true;
+        }
+        //Remooves fully recepieProducts from a recepie
+        public async Task RemoveAllProductsFromRecipeAsync(Guid id)
+        {
+            var recipe = await _context.Recipes
+                .Include(r => r.RecipeProducts)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (recipe == null)
+                throw new ArgumentException("Recipe not found.");
+
+            _context.RecipeProducts.RemoveRange(recipe.RecipeProducts);
+            recipe.RecipeProducts.Clear(); 
+
+            await _context.SaveChangesAsync();
         }
     }
 }

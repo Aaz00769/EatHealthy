@@ -24,7 +24,7 @@ namespace EatHealthy.Services.Core
         }
 
         
-
+        //Shows all available product from world list
         public async Task<IEnumerable<ProductViewModel>> GetAllProductAsync()
         {
             IEnumerable<ProductViewModel> allProducts = await this._productRepository
@@ -43,7 +43,7 @@ namespace EatHealthy.Services.Core
            
             return allProducts;
         }
-
+        //adds a product to world list
         public async Task AddProductAsync(ProductFormInputModel inputModel)
         {
             bool exists = await _productRepository
@@ -67,9 +67,7 @@ namespace EatHealthy.Services.Core
             await _productRepository.AddAsync(newProduct);
             await _productRepository.SaveChangesAsync();
         }
-
-
-
+        //Edits a product 
         public async Task EditProductAsync(Guid id, ProductFormInputModel inputModel)
         {
             var product = await _productRepository.GetByIdAsync(id);
@@ -85,7 +83,7 @@ namespace EatHealthy.Services.Core
             await _productRepository.UpdateAsync(product);
             await _productRepository.SaveChangesAsync();
         }
-
+        //Return a product 
         public async Task<ProductFormInputModel?> GetProductByIdAsync(Guid id)
         {
             var product = await _productRepository.GetByIdAsync(id);
@@ -101,16 +99,18 @@ namespace EatHealthy.Services.Core
                 Carbohydrates = product.Carbohydrates
             };
         }
-
-        public async Task<bool> SoftDeletProductAsync(Guid id)
+        //SoftDelites a product
+        public async Task<bool> SoftDeleteProductAsync(Guid id)
         {
             var product = await _productRepository.GetByIdAsync(id);
             if (product == null || product.IsDeleted) return false;
 
-            await _productRepository.SoftDeleteAsync(product);
+            product.IsDeleted = true;
+            await _productRepository.UpdateAsync(product);
+            await _productRepository.SaveChangesAsync();
             return true;
         }
-
+        //FullDelete product
         public async Task<bool> HardDeleteProductAsync(Guid id)
         {
             var product = await _productRepository.GetByIdAsync(id);
@@ -120,8 +120,7 @@ namespace EatHealthy.Services.Core
             await _productRepository.SaveChangesAsync();
             return true;
         }
-
-
+        //See all soft delited product
         public async Task<IEnumerable<ProductViewModel>> GetAllDeletedProductAsync()
         {
             return await _productRepository
@@ -135,7 +134,7 @@ namespace EatHealthy.Services.Core
                 })
                 .ToListAsync();
         }
-
+        //Resotre a soft delited Product
         public async Task<bool> RestoreProductAsync(Guid id)
         {
             var product = await _productRepository.GetByIdAsync(id);

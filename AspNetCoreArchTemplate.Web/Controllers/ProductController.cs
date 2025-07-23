@@ -29,7 +29,6 @@ namespace EatHealthy.Web.Controllers
             return View(viewModel);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> AddProduct()
         {
@@ -87,5 +86,38 @@ namespace EatHealthy.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SoftDelete(Guid id)
+        {
+            var success = await _productService.SoftDeleteProductAsync(id);
+            if (!success)
+                return NotFound();
+
+            return RedirectToAction(nameof(ShowProducts));
+        }
+        [HttpPost]
+        public async Task<IActionResult> HardDelete(Guid id)
+        {
+            var success = await _productService.HardDeleteProductAsync(id);
+            if (!success)
+                return NotFound();
+
+            return RedirectToAction(nameof(ShowDeletedProducts));
+        }
+        [HttpPost]
+        public async Task<IActionResult> Restore(Guid id)
+        {
+            var success = await _productService.RestoreProductAsync(id);
+            if (!success)
+                return NotFound();
+
+            return RedirectToAction(nameof(ShowDeletedProducts));
+        }
+        [HttpGet]
+        public async Task<IActionResult> ShowDeletedProducts()
+        {
+            var deletedProducts = await _productService.GetAllDeletedProductAsync();
+            return View(deletedProducts);
+        }
     }
 }

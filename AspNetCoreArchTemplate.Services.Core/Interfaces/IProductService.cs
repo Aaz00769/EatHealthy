@@ -20,7 +20,7 @@ namespace EatHealthy.Services.Core.Interfaces
 
         Task<ProductFormInputModel?> GetProductByIdAsync(Guid id);
         
-        Task<bool> SoftDeletProductAsync(Guid id);
+        Task<bool> SoftDeleteProductAsync(Guid id);
 
         Task<bool> HardDeleteProductAsync(Guid id);
 

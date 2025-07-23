@@ -24,10 +24,10 @@ namespace EatHealthy.Services.Core
         {
             _recipeRepository = context;
         }
-
-        public async Task<IEnumerable<RecipeViewModel>> GetAllRecipesAsync()
+        //Returns all the publicated recepies by a user
+        public async Task<IEnumerable<RecipeViewModel>> GetAllPublicatedRecipesAsync()
         {
-            var recipes = await _recipeRepository.GetAllWithProductsAsync();
+            var recipes = await _recipeRepository.GetAllPublicWithProductsAsync();
 
             return recipes.Select(r => new RecipeViewModel
             {
@@ -36,10 +36,10 @@ namespace EatHealthy.Services.Core
                 TotalCalories = r.RecipeProducts.Sum(rp => rp.Product.Calories * rp.Quantity)
             });
         }
-
-        public async Task<RecipeFormInputModel?> GetByIdAsync(Guid id)
+        //Shows a specific recipe that is owned by a user no matter if its public or not
+        public async Task<RecipeFormInputModel?> ShowRecipeeByIdAsync(Guid userId,Guid id)
         {
-            var recipe = await _recipeRepository.GetByIdWithProductsAsync(id);
+            var recipe = await _recipeRepository.GetByIdWithProductsAsync(userId,id);
             if (recipe == null) return null;
 
 
@@ -48,18 +48,21 @@ namespace EatHealthy.Services.Core
             {
                 RecipeId = recipe.Id,
                 Name = recipe.Name,
-                SelectedProducts = recipe.RecipeProducts.Select(rp => new RecipeProductInputModel
+                SelectedProducts = recipe.RecipeProducts.Select(rp => new RecipeProductFormInputModel
                 {
                     ProductId = rp.ProductId,
                     Quantity = rp.Quantity
                 }).ToList()
             };
         }
-
-        public async Task AddRecipeAsync(RecipeFormInputModel inputModel)
+        //Addes a Recepie to the users collection of recepies 
+        public async Task AddRecipeAsync(Guid userId,RecipeFormInputModel inputModel)
         {
+
+            
             var newRecipe = new Recipe
             {
+                CreatedByUserId= userId,
                 Id = Guid.NewGuid(),
                 Name = inputModel.Name,
                 ImageUrl = inputModel.ImageUrl,
@@ -71,18 +74,24 @@ namespace EatHealthy.Services.Core
                 }).ToList()
             };
 
+            
             await _recipeRepository.AddRecipeAsync(newRecipe);
         }
 
-        public async Task EditRecipeAsync(Guid id, RecipeFormInputModel model)
+        //Save All changes to a recepie after a submit
+        public async Task EditRecipeAsync(Guid userId, RecipeFormInputModel model)
         {
-            var recipe = await _recipeRepository.GetByIdWithProductsAsync(id);
+            if (model.RecipeId == null)
+                throw new InvalidOperationException("Recipe ID is required.");
+            var recipe = await _recipeRepository.GetByIdWithProductsAsync(userId,model.RecipeId.Value);
 
 
             if (recipe == null) throw new InvalidOperationException("Recipe not found.");
-
+            
             recipe.Name = model.Name;
             recipe.RecipeProducts.Clear();
+            await _recipeRepository.RemoveAllProductsFromRecipeAsync(model.RecipeId.Value);
+
             recipe.RecipeProducts = model.SelectedProducts.Select(p => new RecipeProduct
             {
                 ProductId = p.ProductId,
@@ -91,10 +100,11 @@ namespace EatHealthy.Services.Core
 
             await _recipeRepository.EditRecipeAsync(recipe);
         }
-
+        //Soft delete a recepie
         public async Task<bool> SoftDeleteRecipeAsync(Guid id)
         {
             return await _recipeRepository.SoftDeleteAsync(id);
         }
+
     }
 }

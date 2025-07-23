@@ -1,0 +1,80 @@
+﻿@model EatHealthy.Web.ViewModels.Recipe.RecipeFormInputModel
+@using EatHealthy.Web.ViewModels.Product
+@{
+    ViewData["Title"] = "Create Recipe";
+    var products = (IEnumerable<ProductViewModel>)ViewBag.AvailableProducts;
+}
+
+<h2>Create a New Recipe</h2>
+
+<form asp-action="CreateRecipe" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger" />
+    </div>
+
+    <hr />
+    <h4>Add Products</h4>
+
+    <div id="products-list">
+        <!-- Product selector will be cloned into here -->
+    </div>
+
+    <button type="button" id="add-product" class="btn btn-sm btn-outline-primary mt-2">Add Product</button>
+
+    <hr />
+
+    <button type="submit" class="btn btn-success">Save Recipe</button>
+</form>
+
+<template id="product-template">
+    <div class="product-row form-inline mt-2">
+        <select name="SelectedProducts[__index__].ProductId" class="form-control mr-2" required>
+            <option value="">-- Select Product --</option>
+            @foreach (var product in products)
+            {
+                <option value="@product.Id">@product.Name (@product.Calories kcal)</option>
+            }
+        </select>
+        <input name="SelectedProducts[__index__].Quantity" type="number" value="1" class="form-control mr-2" placeholder="Quantity" min="1" required />
+        <button type="button" class="btn btn-danger btn-sm remove-product">Remove</button>
+    </div>
+</template>
+
+@section Scripts {
+    <script>
+        let index = 0;
+
+        function addProductRow() {
+            const template = document.getElementById("product-template").innerHTML;
+            const html = template.replace(/__index__/g, index++);
+            const div = document.createElement("div");
+            div.innerHTML = html;
+            document.getElementById("products-list").appendChild(div);
+        }
+
+        document.getElementById("add-product").addEventListener("click", addProductRow);
+
+        document.addEventListener("click", function (e) {
+            if (e.target && e.target.classList.contains("remove-product")) {
+                e.target.closest(".product-row").remove();
+            }
+        });
+
+        // Add first product row by default
+        window.onload = addProductRow;
+    </script>
+}

@@ -26,17 +26,33 @@ namespace EatHealthy.Web
             builder.Services
                 .AddIdentity<AppUser, IdentityRole<Guid>>(options =>
                 {
-                    options.SignIn.RequireConfirmedAccount = true;
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 1;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric= false;
                 })
-                .AddEntityFrameworkStores<EatHealthyDbContext>();
+                .AddEntityFrameworkStores<EatHealthyDbContext>()
+                .AddDefaultUI()
+                 .AddDefaultTokenProviders();
             builder.Services.AddControllersWithViews();
+            
 
+
+            /* builder.Services.AddScoped<IDayService, DayService>();
+             builder.Services.AddScoped<IMealService, MealService>();*/
+            builder.Services.AddScoped<IRecipeService, RecipeService>();
             builder.Services.AddTransient<IProductService, ProductService>();
+           
+
             builder.Services.AddRazorPages();
 
+            builder.Services.AddScoped<IDayRepository, DayRepository>();
+            builder.Services.AddScoped<IMealRepository, MealRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
-
+            builder.Services.AddScoped<IRecipeFacade, RecipeFacade>();
 
             WebApplication? app = builder.Build();
             

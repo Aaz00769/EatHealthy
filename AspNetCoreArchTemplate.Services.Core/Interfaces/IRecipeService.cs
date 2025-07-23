@@ -10,9 +10,9 @@ namespace EatHealthy.Services.Core.Interfaces
     using EatHealthy.Web.ViewModels.Recipe;
     public interface IRecipeService
     {
-        Task<IEnumerable<RecipeViewModel>> GetAllRecipesAsync();
-        Task<RecipeFormInputModel?> GetByIdAsync(Guid id);
-        Task AddRecipeAsync(RecipeFormInputModel model);
+        Task<IEnumerable<RecipeViewModel>> GetAllPublicatedRecipesAsync();
+        Task<RecipeFormInputModel?> ShowRecipeeByIdAsync(Guid userId, Guid id);
+        Task AddRecipeAsync(Guid userId,RecipeFormInputModel model);
         Task EditRecipeAsync(Guid id, RecipeFormInputModel model);
         Task<bool> SoftDeleteRecipeAsync(Guid id);
     }
