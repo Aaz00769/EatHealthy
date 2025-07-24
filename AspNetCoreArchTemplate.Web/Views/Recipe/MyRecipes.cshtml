@@ -18,8 +18,11 @@ else
             <div class="p-4 border rounded-lg shadow bg-white">
                 <h3 class="text-xl font-bold mb-2">@recipe.Name</h3>
                 <p><strong>Total Calories:</strong> @recipe.TotalCalories</p>
-                <a href="#" class="inline-block mt-2 text-sm text-blue-600 hover:underline">View Details</a>
+
+                <a asp-action="Details" asp-route-recipeId="@recipe.Id" class="btn btn-info">View Details</a>
+                <a asp-action="EditRecipe" asp-route-recipeId="@recipe.Id" class="btn btn-info">Edit</a>
             </div>
         }
     </div>
+    <p>Create new Recipe <button><a href="@Url.Action("CreateRecipe", "Recipe")" class="text-blue-600 underline">Create one now</a>.</button></p>
 }

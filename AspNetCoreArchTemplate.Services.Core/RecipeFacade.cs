@@ -27,7 +27,7 @@ public class RecipeFacade : IRecipeFacade
 
     public async Task EditRecipeAsync(Guid id, RecipeFormInputModel model)
     {
-        throw new NotImplementedException();
+        await _recipeService.EditRecipeAsync(id, model);
     }
 
 
@@ -35,4 +35,15 @@ public class RecipeFacade : IRecipeFacade
     {
         return await _recipeService.GetUserRecipesAsync(userId);
     }
+
+    public async Task<RecipeFormInputModel?> ShowRecipeByIdAsync(Guid userId, Guid id)
+    {
+        return await _recipeService.ShowRecipeByIdAsync(userId, id);
+    }
+
+    public async Task<RecipeFormInputModel?> GetForEditByIdasync(Guid id)
+    {
+        return await _recipeService.GetForEditByIdasync(id);
+    }
+
 }

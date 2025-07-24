@@ -23,7 +23,7 @@ namespace AspNetCoreArchTemplate.Data.Repository
         //returns a list of all publicated Recepies
         public async Task<IEnumerable<Recipe>> GetAllPublicWithProductsAsync()
         {
-            return await this.AllAsNoTracking()
+            return await this.All()
                 .Where(r => !r.IsDeleted && r.IsPublic)
                 .Include(r => r.RecipeProducts)
                     .ThenInclude(rp => rp.Product)
@@ -61,11 +61,20 @@ namespace AspNetCoreArchTemplate.Data.Repository
         {
             await this.AddAsync(recipe);
             await this.SaveChangesAsync();
-        }
 
+        }
+        public async Task UpdateRecipeAsync(Recipe recipe)
+        {
+            _context.Recipes.Update(recipe); // Proper update call
+            await _context.SaveChangesAsync();
+        }
+        public async Task<Recipe?> GetByIdAsync(Guid id)
+        {
+            return await _context.Recipes.FindAsync(id);
+        }
         public async Task EditRecipeAsync(Recipe recipe)
         {
-            this.UpdateAsync(recipe);      // synchronous
+            await this.UpdateAsync(recipe);      // synchronous
             await this.SaveChangesAsync(); // async save
         }
 
@@ -79,11 +88,12 @@ namespace AspNetCoreArchTemplate.Data.Repository
             return true;
         }
         //Remooves fully recepieProducts from a recepie
-        public async Task RemoveAllProductsFromRecipeAsync(Guid id)
+        public async Task RemoveAllProductsFromRecipeAsync(Guid recipeId, Guid userId)
         {
             var recipe = await _context.Recipes
-                .Include(r => r.RecipeProducts)
-                .FirstOrDefaultAsync(r => r.Id == id);
+               .Include(r => r.RecipeProducts)
+               .FirstOrDefaultAsync(r => r.Id == recipeId && r.CreatedByUserId == userId && !r.IsDeleted);
+
 
             if (recipe == null)
                 throw new ArgumentException("Recipe not found.");

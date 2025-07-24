@@ -29,16 +29,17 @@ namespace EatHealthy.Data.Configuration
                 .HasMaxLength(DescriptionLenght);
 
             entity
-                .Property(r => r.IsPublic)
-                .IsRequired();
+                .Property(r => r.IsPublic);
+
+
 
             entity
-                .Property(r => r.IsApprovedByAdmin)
-                .IsRequired();
+                .Property(r => r.IsApprovedByAdmin);
+               
 
             entity
-                .Property(r => r.CreatedOn)
-                .IsRequired();
+                .Property(r => r.CreatedOn);
+                
 
             entity
                 .Property(r => r.ModifiedOn);
@@ -48,8 +49,8 @@ namespace EatHealthy.Data.Configuration
                 .HasComment("User-created recipe");
 
             entity.Property(p => p.IsDeleted)
-              .HasDefaultValue(false)
-              .IsRequired();
+              .HasDefaultValue(false);
+             
 
         }
     }

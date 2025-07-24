@@ -8,7 +8,7 @@ namespace EatHealthy.Web.ViewModels.Recipe
 {
     public class RecipeFormInputModel
     {
-        public Guid? RecipeId { get; set; }
+        public Guid RecipeId { get; set; }
 
         [Required(ErrorMessage = NameRequired)]
         [StringLength(100, ErrorMessage = NameLength)]
@@ -22,8 +22,8 @@ namespace EatHealthy.Web.ViewModels.Recipe
 
         [Required(ErrorMessage = AtLeastOneProduct)]
         [MinLength(1, ErrorMessage = AtLeastOneProduct)]
-        public List<RecipeProductFormInputModel> SelectedProducts { get; set; } = new();
+        public List<RecipeProductFormInputModel?> SelectedProducts { get; set; } = new();
 
-        public List<ProductViewModel> AvailableProducts { get; set; } = new();
+        public List<ProductViewModel?> AvailableProducts { get; set; } = new();
     }
 }

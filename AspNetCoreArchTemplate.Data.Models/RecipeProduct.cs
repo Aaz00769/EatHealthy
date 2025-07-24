@@ -30,7 +30,7 @@ namespace EatHealthy.Data.Models
         public string? Note { get; set; }
 
         [Comment("Times Product is used in Recepie")]
-        public int Quantity { get; set; } = 1;
+        public int Quantity { get; set; } 
 
         // Navigation properties
         public Recipe Recipe { get; set; } = null!;

@@ -15,8 +15,9 @@ namespace AspNetCoreArchTemplate.Data.Repository.Interfaces
         Task AddRecipeAsync(Recipe recipe);
         Task EditRecipeAsync(Recipe recipe);
         Task<bool> SoftDeleteAsync(Guid id);
-        Task RemoveAllProductsFromRecipeAsync(Guid recipeId);
+        Task RemoveAllProductsFromRecipeAsync(Guid recipeId, Guid userId);
 
         Task<Recipe?> GetByIdWithProductsAsync(Guid userId, Guid id);
+        Task UpdateRecipeAsync(Recipe Recipe);
     }
 }

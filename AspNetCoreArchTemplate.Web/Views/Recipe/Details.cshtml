@@ -1,0 +1,19 @@
+﻿@model EatHealthy.Web.ViewModels.Recipe.RecipeFormInputModel
+
+@{
+    ViewData["Title"] = "Recipe Details";
+}
+
+<h2>@Model.Name</h2>
+<p><strong>Description:</strong> @Model.Description</p>
+<p><strong>Image:</strong> <img src="@Model.ImageUrl" alt="Recipe Image" style="max-width: 300px;" /></p>
+
+<h3>Ingredients:</h3>
+<ul>
+    @foreach (var product in Model.SelectedProducts)
+    {
+        <li>@product.ProductName - Quantity: @product.Quantity</li>
+    }
+</ul>
+
+<a asp-action="MyRecipes">Back to My Recipes</a>

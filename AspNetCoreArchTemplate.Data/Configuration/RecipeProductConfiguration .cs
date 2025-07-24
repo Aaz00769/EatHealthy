@@ -20,7 +20,7 @@ namespace EatHealthy.Data.Configuration
 
             entity
                 .Property(rp => rp.Grams)
-                .IsRequired()
+              
                 .HasComment("Amount of the product in grams");
 
             entity

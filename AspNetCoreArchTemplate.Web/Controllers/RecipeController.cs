@@ -63,6 +63,47 @@ namespace EatHealthy.Web.Controllers
             return View(recipes);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid recipeId)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var recipe = await _recipeFacade.ShowRecipeByIdAsync(userId, recipeId);
 
+            if (recipe == null)
+            {
+                return NotFound(); 
+            }
+
+            return View(recipe); 
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditRecipe(Guid recipeId)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var recipe = await _recipeFacade.GetForEditByIdasync(recipeId);
+            if (recipe == null) 
+            {
+                return NotFound();
+            }
+
+            var products = await _recipeFacade.GetAllProductAsync();
+            ViewBag.AvailableProducts = products;
+            return View(recipe); // Sends data to EditRecipe.cshtml
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditRecipe(Guid id,RecipeFormInputModel model)
+        {
+            if (!ModelState.IsValid || model.RecipeId == Guid.Empty) 
+            {
+                ViewBag.AvailableProducts = await _recipeFacade.GetAllProductAsync();
+                return View(model);
+            }
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _recipeFacade.EditRecipeAsync(userId, model);
+
+            return RedirectToAction("MyRecipes",new {id});
+        }
+        
     }
 }

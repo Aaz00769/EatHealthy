@@ -30,11 +30,8 @@ namespace AspNetCoreArchTemplate.Data.Repository
             return await _context.Products.FindAsync(id);
         }
 
-        public async Task UpdateAsync(Product product)
-        {
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
-        }
+        
+        
 
         public async Task DeleteAsync(Guid id)
         {

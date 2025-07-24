@@ -5,7 +5,7 @@ namespace EatHealthy.Services.Core
     using AspNetCoreArchTemplate.Data.Repository;
     using AspNetCoreArchTemplate.Data.Repository.Interfaces;
     using EatHealthy.Data;
-    using EatHealthy.Data.Models;
+    using  EatHealthy.Data.Models;
     using EatHealthy.Services.Core.Interfaces;
     using EatHealthy.Web.ViewModels.Product;
     using EatHealthy.Web.ViewModels.Recipe;
@@ -15,14 +15,22 @@ namespace EatHealthy.Services.Core
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using static EatHealthy.Data.Common.EntityConsts;
+    using static EatHealthy.Web.ViewModels.ValidationMessages;
+
+            
 
     public class RecipeService : IRecipeService
     {
         private readonly IRecipeRepository _recipeRepository;
+        private readonly EatHealthyDbContext _contexts;
 
-        public RecipeService(IRecipeRepository context)
+
+
+        public RecipeService(IRecipeRepository rcontext, EatHealthyDbContext contexts)
         {
-            _recipeRepository = context;
+            _recipeRepository = rcontext;
+            _contexts = contexts;
         }
         //Returns all the publicated recepies by a user
         public async Task<IEnumerable<RecipeViewModel>> GetAllPublicatedRecipesAsync()
@@ -53,14 +61,14 @@ namespace EatHealthy.Services.Core
         {
 
             
-            var newRecipe = new Recipe
+            var newRecipe = new Data.Models.Recipe
             {
                 CreatedByUserId= userId,
                 Id = Guid.NewGuid(),
                 Name = inputModel.Name,
                 ImageUrl = inputModel.ImageUrl,
                 Description = inputModel.Description,
-                RecipeProducts = inputModel.SelectedProducts.Select(rp => new RecipeProduct
+                RecipeProducts = inputModel.SelectedProducts.Select(rp => new Data.Models.RecipeProduct
                 {
                     ProductId = rp.ProductId,
                     Quantity = rp.Quantity
@@ -72,27 +80,44 @@ namespace EatHealthy.Services.Core
         }
 
         //Save All changes to a recepie after a submit
+        /*            recipe.CreatedOn = DateTime.Now;
+         */
         public async Task EditRecipeAsync(Guid userId, RecipeFormInputModel model)
         {
-            if (model.RecipeId == null)
-                throw new InvalidOperationException("Recipe ID is required.");
-            var recipe = await _recipeRepository.GetByIdWithProductsAsync(userId,model.RecipeId.Value);
-
-
-            if (recipe == null) throw new InvalidOperationException("Recipe not found.");
             
+            var recipe = await _recipeRepository.GetByIdAsync(model.RecipeId);
+
+            if (recipe == null)
+                throw new InvalidOperationException("receps not found.");
+
             recipe.Name = model.Name;
-            recipe.RecipeProducts.Clear();
-            await _recipeRepository.RemoveAllProductsFromRecipeAsync(model.RecipeId.Value);
+            recipe.Description = model.Description;
+            recipe.CreatedByUserId = userId;
 
-            recipe.RecipeProducts = model.SelectedProducts.Select(p => new RecipeProduct
-            {
-                ProductId = p.ProductId,
-                Quantity = p.Quantity
-            }).ToList();
-
-            await _recipeRepository.EditRecipeAsync(recipe);
+            
+            await _recipeRepository.UpdateAsync(recipe);
+            await _recipeRepository.SaveChangesAsync();
         }
+        public async Task<RecipeFormInputModel?> GetForEditByIdasync(Guid id)
+        {
+            return await _contexts.Recipes
+                .Where(r => r.Id == id)
+                .Select(r => new RecipeFormInputModel()
+                {
+                    RecipeId = r.Id,
+                    Name = r.Name,
+                    Description = r.Description,
+                    ImageUrl = r.ImageUrl,
+                    SelectedProducts = r.RecipeProducts.Select(rp => new RecipeProductFormInputModel
+                    {
+                        ProductId = rp.ProductId,
+                        ProductName = rp.Product.Name,
+                        Quantity = rp.Quantity
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
+        }
+
         //Soft delete a recepie
         public async Task<bool> SoftDeleteRecipeAsync(Guid id)
         {
@@ -113,6 +138,7 @@ namespace EatHealthy.Services.Core
                 SelectedProducts = recipe.RecipeProducts.Select(rp => new RecipeProductFormInputModel
                 {
                     ProductId = rp.ProductId,
+                    ProductName = rp.Product.Name,
                     Quantity = rp.Quantity
                 }).ToList()
             };

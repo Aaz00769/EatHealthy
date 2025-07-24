@@ -7,11 +7,11 @@ namespace EatHealthy.Web.ViewModels.Recipe
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; } = null!;
+        public string? Name { get; set; } = null!;
 
-        public List<RecipeProductFormInputModel> SelectedProducts { get; set; } = new();
+        public List<RecipeProductFormInputModel?> SelectedProducts { get; set; } = new();
 
-        public int TotalCalories { get; set; }
+        public int? TotalCalories { get; set; }
 
         public string? Description { get; set; }
     }

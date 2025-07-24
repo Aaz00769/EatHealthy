@@ -1,0 +1,109 @@
+﻿@model EatHealthy.Web.ViewModels.Recipe.RecipeFormInputModel
+@using EatHealthy.Web.ViewModels.Product
+@{
+    ViewData["Title"] = "Edit Recipe";
+    var products = (IEnumerable<ProductViewModel>)ViewBag.AvailableProducts;
+}
+
+<h2>Edit Recipe</h2>
+
+<form asp-action="EditRecipe" method="post">
+    <input type="hidden" asp-for="RecipeId" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <h4>Products</h4>
+    <div id="products-list">
+        @for (int i = 0; i < Model.SelectedProducts.Count; i++)
+        {
+            <div class="product-row mb-2">
+                <select name="SelectedProducts[@i].ProductId" class="form-control d-inline-block w-auto" required>
+                    <option value="">-- Select Product --</option>
+                    @foreach (var product in products)
+                    {
+                        <option value="@product.Id" selected="@(product.Id == Model.SelectedProducts[i].ProductId)">
+                            @product.Name (@product.Calories kcal)
+                        </option>
+                    }
+                </select>
+                <input type="number" name="SelectedProducts[@i].Quantity" value="@Model.SelectedProducts[i].Quantity" class="form-control d-inline-block w-auto" min="1" required />
+                <button type="button" class="btn btn-danger btn-sm remove-product">Remove</button>
+            </div>
+        }
+    </div>
+
+    <button type="button" class="btn btn-outline-primary btn-sm" id="add-product">Add Product</button>
+    <br /><br />
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+@section Scripts {
+    <script>
+        let index = @Model.SelectedProducts.Count;
+
+        const products = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(products));
+
+        document.getElementById("add-product").addEventListener("click", () => {
+            const container = document.createElement("div");
+            container.className = "product-row mb-2";
+
+            const select = document.createElement("select");
+            select.name = `SelectedProducts[${index}].ProductId`;
+            select.className = "form-control d-inline-block w-auto";
+            select.required = true;
+
+            let defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "-- Select Product --";
+            select.appendChild(defaultOption);
+
+            products.forEach(p => {
+                const opt = document.createElement("option");
+                opt.value = p.id;
+                opt.textContent = `${p.name} (${p.calories} kcal)`;
+                select.appendChild(opt);
+            });
+
+            const qty = document.createElement("input");
+            qty.type = "number";
+            qty.name = `SelectedProducts[${index}].Quantity`;
+            qty.value = 1;
+            qty.min = 1;
+            qty.required = true;
+            qty.className = "form-control d-inline-block w-auto";
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.textContent = "Remove";
+            removeBtn.className = "btn btn-danger btn-sm remove-product";
+            removeBtn.onclick = () => container.remove();
+
+            container.appendChild(select);
+            container.appendChild(qty);
+            container.appendChild(removeBtn);
+
+            document.getElementById("products-list").appendChild(container);
+
+            index++;
+        });
+
+        document.querySelectorAll(".remove-product").forEach(btn => {
+            btn.addEventListener("click", function () {
+                this.closest(".product-row").remove();
+            });
+        });
+    </script>
+}

@@ -41,8 +41,8 @@ namespace EatHealthy.Data.Configuration
                 .Property(p => p.ServingSizeGrams);
 
             entity.Property(p => p.IsDeleted)
-                  .HasDefaultValue(false)
-                  .IsRequired();
+                  .HasDefaultValue(false);
+                  
 
             
         }
