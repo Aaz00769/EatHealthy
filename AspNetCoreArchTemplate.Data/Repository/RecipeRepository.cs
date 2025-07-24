@@ -37,15 +37,25 @@ namespace AspNetCoreArchTemplate.Data.Repository
                 .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
         }
         //returns a recepie witha all its products
-        public async Task<Recipe?> GetByIdWithProductsAsync(Guid userId, Guid id)
+        public async Task<IEnumerable<Recipe>> GetUserRecipesAsync(Guid userId)
         {
             return await this.All()
                 .Where(r => r.CreatedByUserId == userId)
                 .Include(r => r.RecipeProducts)
                     .ThenInclude(rp => rp.Product)
-                .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
+                    .ToListAsync();
+                
         }
-       
+
+        public async Task<Recipe?> GetByIdWithProductsAsync(Guid userId, Guid id)
+        {
+            return await this.All()
+                .Where(r => r.CreatedByUserId == userId && r.Id == id && !r.IsDeleted)
+                .Include(r => r.RecipeProducts)
+                    .ThenInclude(rp => rp.Product)
+                .FirstOrDefaultAsync();
+        }
+
         //Adds a recepie 
         public async Task AddRecipeAsync(Recipe recipe)
         {
@@ -83,5 +93,7 @@ namespace AspNetCoreArchTemplate.Data.Repository
 
             await _context.SaveChangesAsync();
         }
+
+        
     }
 }

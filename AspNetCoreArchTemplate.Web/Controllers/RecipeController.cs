@@ -52,5 +52,17 @@ namespace EatHealthy.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> MyRecipes()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var recipes = await _recipeFacade.GetUserRecipesAsync(userId);
+
+            return View(recipes);
+        }
+
+
     }
 }

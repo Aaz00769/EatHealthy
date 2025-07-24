@@ -11,7 +11,9 @@ namespace EatHealthy.Services.Core.Interfaces
     public interface IRecipeService
     {
         Task<IEnumerable<RecipeViewModel>> GetAllPublicatedRecipesAsync();
-        Task<RecipeFormInputModel?> ShowRecipeeByIdAsync(Guid userId, Guid id);
+        Task<IEnumerable<RecipeViewModel>> GetUserRecipesAsync(Guid userId);
+
+        Task<RecipeFormInputModel?> ShowRecipeByIdAsync(Guid userId, Guid id);
         Task AddRecipeAsync(Guid userId,RecipeFormInputModel model);
         Task EditRecipeAsync(Guid id, RecipeFormInputModel model);
         Task<bool> SoftDeleteRecipeAsync(Guid id);

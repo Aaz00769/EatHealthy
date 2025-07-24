@@ -37,23 +37,16 @@ namespace EatHealthy.Services.Core
             });
         }
         //Shows a specific recipe that is owned by a user no matter if its public or not
-        public async Task<RecipeFormInputModel?> ShowRecipeeByIdAsync(Guid userId,Guid id)
+        public async Task<IEnumerable<RecipeViewModel>> GetUserRecipesAsync(Guid userId)
         {
-            var recipe = await _recipeRepository.GetByIdWithProductsAsync(userId,id);
-            if (recipe == null) return null;
+            var recipes = await _recipeRepository.GetUserRecipesAsync(userId);
 
-
-
-            return new RecipeFormInputModel
+            return recipes.Select(r => new RecipeViewModel
             {
-                RecipeId = recipe.Id,
-                Name = recipe.Name,
-                SelectedProducts = recipe.RecipeProducts.Select(rp => new RecipeProductFormInputModel
-                {
-                    ProductId = rp.ProductId,
-                    Quantity = rp.Quantity
-                }).ToList()
-            };
+                Id = r.Id,
+                Name = r.Name,
+                TotalCalories = r.RecipeProducts.Sum(rp => rp.Product.Calories * rp.Quantity)
+            });
         }
         //Addes a Recepie to the users collection of recepies 
         public async Task AddRecipeAsync(Guid userId,RecipeFormInputModel inputModel)
@@ -105,6 +98,26 @@ namespace EatHealthy.Services.Core
         {
             return await _recipeRepository.SoftDeleteAsync(id);
         }
+
+        public async Task<RecipeFormInputModel?> ShowRecipeByIdAsync(Guid userId, Guid id)
+        {
+            var recipe = await _recipeRepository.GetByIdWithProductsAsync(userId, id);
+            if (recipe == null) return null;
+
+            return new RecipeFormInputModel
+            {
+                RecipeId = recipe.Id,
+                Name = recipe.Name,
+                Description = recipe.Description,
+                ImageUrl = recipe.ImageUrl,
+                SelectedProducts = recipe.RecipeProducts.Select(rp => new RecipeProductFormInputModel
+                {
+                    ProductId = rp.ProductId,
+                    Quantity = rp.Quantity
+                }).ToList()
+            };
+        }
+
 
     }
 }

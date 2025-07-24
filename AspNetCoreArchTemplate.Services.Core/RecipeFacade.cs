@@ -24,4 +24,15 @@ public class RecipeFacade : IRecipeFacade
     {
         await _recipeService.AddRecipeAsync(userId, model);
     }
+
+    public async Task EditRecipeAsync(Guid id, RecipeFormInputModel model)
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public async Task<IEnumerable<RecipeViewModel>> GetUserRecipesAsync(Guid userId)
+    {
+        return await _recipeService.GetUserRecipesAsync(userId);
+    }
 }

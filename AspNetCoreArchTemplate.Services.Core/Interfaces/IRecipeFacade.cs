@@ -12,6 +12,10 @@ namespace EatHealthy.Services.Core.Interfaces
     {
         Task<IEnumerable<ProductViewModel>> GetAllProductAsync();
         Task CreateRecipeAsync(Guid userId, RecipeFormInputModel model);
+
+        Task EditRecipeAsync(Guid id, RecipeFormInputModel model);
+
+        Task<IEnumerable<RecipeViewModel>> GetUserRecipesAsync(Guid userId);
     }
 
 }
