@@ -116,6 +116,17 @@ namespace EatHealthy.Web.Controllers
                 return View(model);
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> SoftDelete(Guid id)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var success = await _recipeFacade.SoftDeleteRecipeAsync(id);
+
+            if (!success)
+                return NotFound();
+
+            return RedirectToAction(nameof(MyRecipes));
+        }
 
     }
 }

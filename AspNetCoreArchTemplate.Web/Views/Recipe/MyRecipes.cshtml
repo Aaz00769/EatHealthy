@@ -19,10 +19,26 @@ else
                 <h3 class="text-xl font-bold mb-2">@recipe.Name</h3>
                 <p><strong>Total Calories:</strong> @recipe.TotalCalories</p>
 
-                <a asp-action="Details" asp-route-recipeId="@recipe.Id" class="btn btn-info">View Details</a>
-                <a asp-action="EditRecipe" asp-route-recipeId="@recipe.Id" class="btn btn-info">Edit</a>
+                <div class="mt-3 flex flex-wrap gap-2">
+                    <a asp-action="Details" asp-route-recipeId="@recipe.Id"
+                       class="btn btn-info flex-grow">View</a>
+                    <a asp-action="EditRecipe" asp-route-recipeId="@recipe.Id"
+                       class="btn btn-info flex-grow">Edit</a>
+                    <form asp-action="SoftDelete" method="post" class="flex-grow">
+                        <input type="hidden" name="id" value="@recipe.Id" />
+                        <button type="submit" class="btn btn-danger w-full"
+                                onclick="return confirm('Are you sure?')">
+                            Delete
+                        </button>
+                    </form>
+                </div>
             </div>
         }
     </div>
-    <p>Create new Recipe <button><a href="@Url.Action("CreateRecipe", "Recipe")" class="text-blue-600 underline">Create one now</a>.</button></p>
+
+    <div class="mt-4">
+        <a href="@Url.Action("CreateRecipe", "Recipe")" class="text-blue-600 underline">
+            Create new Recipe
+        </a>
+    </div>
 }

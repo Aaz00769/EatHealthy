@@ -49,7 +49,9 @@ namespace EatHealthy.Services.Core
         {
             var recipes = await _recipeRepository.GetUserRecipesAsync(userId);
 
-            return recipes.Select(r => new RecipeViewModel
+            return recipes
+            .Where(r => !r.IsDeleted)
+            .Select(r => new RecipeViewModel
             {
                 Id = r.Id,
                 Name = r.Name,
@@ -133,7 +135,16 @@ namespace EatHealthy.Services.Core
         //Soft delete a recepie
         public async Task<bool> SoftDeleteRecipeAsync(Guid id)
         {
-            return await _recipeRepository.SoftDeleteAsync(id);
+            var recipe = await _recipeRepository.GetByIdAsync(id);
+            if (recipe == null || recipe.IsDeleted)
+                return false;
+
+            recipe.IsDeleted = true;
+            recipe.ModifiedOn = DateTime.UtcNow;
+
+            await _recipeRepository.UpdateAsync(recipe);
+            await _recipeRepository.SaveChangesAsync();
+            return true;
         }
 
         public async Task<RecipeFormInputModel?> ShowRecipeByIdAsync(Guid userId, Guid id)

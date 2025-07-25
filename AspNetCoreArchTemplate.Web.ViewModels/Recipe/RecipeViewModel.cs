@@ -14,5 +14,8 @@ namespace EatHealthy.Web.ViewModels.Recipe
         public int? TotalCalories { get; set; }
 
         public string? Description { get; set; }
+
+        public string DeleteConfirmationMessage =>
+                       $"Are you sure you want to delete '{Name}'? This action cannot be undone.";
     }
 }
