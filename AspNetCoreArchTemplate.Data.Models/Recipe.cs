@@ -23,7 +23,7 @@ namespace EatHealthy.Data.Models
 
         [Comment("ID of the user who created this recipe")]
         public Guid CreatedByUserId { get; set; }
-        public AppUser CreatedByUser { get; set; } = null!;
+        public AppUser CreatedByUser { get; set; } 
 
         [Comment("Used to check if item is Soft Delited")]
         public bool IsDeleted { get; set; } = false;
@@ -39,6 +39,7 @@ namespace EatHealthy.Data.Models
 
         [Comment("Date and time when the recipe was last modified (nullable)")]
         public DateTime? ModifiedOn { get; set; }
+        
 
         [Comment("List of products used in the recipe with their amounts")]
         public ICollection<RecipeProduct> RecipeProducts { get; set; } = new List<RecipeProduct>();

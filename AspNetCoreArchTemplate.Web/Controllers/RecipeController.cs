@@ -5,6 +5,7 @@ using EatHealthy.Web.ViewModels.Recipe;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace EatHealthy.Web.Controllers
@@ -79,31 +80,42 @@ namespace EatHealthy.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> EditRecipe(Guid recipeId)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
             var recipe = await _recipeFacade.GetForEditByIdasync(recipeId);
-            if (recipe == null) 
-            {
-                return NotFound();
-            }
+            if (recipe == null) return NotFound();
 
-            var products = await _recipeFacade.GetAllProductAsync();
+            // Ensure SelectedProducts is not null and filter nulls
+            recipe.SelectedProducts = recipe.SelectedProducts?
+                .Where(p => p != null)
+                .ToList() ?? new List<RecipeProductFormInputModel>();
+
+            var products = (await _recipeFacade.GetAllProductAsync())
+                .Where(p => p != null)
+                .ToList();
+
             ViewBag.AvailableProducts = products;
-            return View(recipe); // Sends data to EditRecipe.cshtml
+            return View(recipe);
         }
         [HttpPost]
-        public async Task<IActionResult> EditRecipe(Guid id,RecipeFormInputModel model)
+        public async Task<IActionResult> EditRecipe(Guid id, RecipeFormInputModel model)
         {
-            if (!ModelState.IsValid || model.RecipeId == Guid.Empty) 
+            if (!ModelState.IsValid)
             {
                 ViewBag.AvailableProducts = await _recipeFacade.GetAllProductAsync();
                 return View(model);
             }
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            await _recipeFacade.EditRecipeAsync(userId, model);
 
-            return RedirectToAction("MyRecipes",new {id});
+            try
+            {
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                await _recipeFacade.EditRecipeAsync(userId, model);
+                return RedirectToAction("MyRecipes");
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                ModelState.AddModelError("", "The recipe was modified by another user. Please refresh and try again.");
+                return View(model);
+            }
         }
-        
+
     }
 }

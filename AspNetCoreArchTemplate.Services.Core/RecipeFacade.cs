@@ -25,17 +25,21 @@ public class RecipeFacade : IRecipeFacade
         await _recipeService.AddRecipeAsync(userId, model);
     }
 
-    public async Task EditRecipeAsync(Guid id, RecipeFormInputModel model)
+    //edits recipe 
+    public async Task EditRecipeAsync(Guid userId, RecipeFormInputModel model)
     {
-        await _recipeService.EditRecipeAsync(id, model);
+        
+        if (model == null) throw new ArgumentNullException(nameof(model));
+
+        await _recipeService.EditRecipeAsync(userId, model);
     }
 
-
+    //returns all the recipes of a user
     public async Task<IEnumerable<RecipeViewModel>> GetUserRecipesAsync(Guid userId)
     {
         return await _recipeService.GetUserRecipesAsync(userId);
     }
-
+    // returns a receie by its Id 
     public async Task<RecipeFormInputModel?> ShowRecipeByIdAsync(Guid userId, Guid id)
     {
         return await _recipeService.ShowRecipeByIdAsync(userId, id);

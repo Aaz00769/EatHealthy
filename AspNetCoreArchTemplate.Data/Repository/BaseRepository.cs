@@ -36,10 +36,7 @@ namespace AspNetCoreArchTemplate.Data.Repository
             return _dbSet;
         }
 
-        public IQueryable<T> AllAsNoTracking()
-        {
-            return _dbSet.AsNoTracking();
-        }
+     
 
         public async Task AddAsync(T entity)
         {

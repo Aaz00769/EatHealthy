@@ -22,8 +22,10 @@ namespace EatHealthy.Data
         public virtual DbSet<Day> Days { get; set; }
         public virtual DbSet<DayMeal> DayMeals { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            
             base.OnModelCreating(builder);
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

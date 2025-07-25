@@ -28,9 +28,9 @@ namespace EatHealthy.Services.Core
         public async Task<IEnumerable<ProductViewModel>> GetAllProductAsync()
         {
             IEnumerable<ProductViewModel> allProducts = await this._productRepository
-                .AllAsNoTracking()
+                .All()
                 .Where(p => !p.IsDeleted)
-                .AsNoTracking()
+                .Where(p => !p.IsDeleted && p != null)
                 .Select(p => new ProductViewModel()
                 {
                     Id = p.Id,
@@ -124,7 +124,7 @@ namespace EatHealthy.Services.Core
         public async Task<IEnumerable<ProductViewModel>> GetAllDeletedProductAsync()
         {
             return await _productRepository
-                .AllAsNoTracking()
+                .All()
                 .Where(p => p.IsDeleted)
                 .Select(p => new ProductViewModel
                 {

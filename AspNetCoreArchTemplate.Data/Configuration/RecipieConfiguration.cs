@@ -50,7 +50,10 @@ namespace EatHealthy.Data.Configuration
 
             entity.Property(p => p.IsDeleted)
               .HasDefaultValue(false);
-             
+
+
+            entity.Property(r => r.ModifiedOn).IsConcurrencyToken();
+
 
         }
     }

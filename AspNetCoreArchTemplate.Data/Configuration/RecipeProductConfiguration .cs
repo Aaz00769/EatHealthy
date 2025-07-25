@@ -30,9 +30,8 @@ namespace EatHealthy.Data.Configuration
 
             entity
                 .HasOne(rp => rp.Recipe)
-                .WithMany(rp => rp.RecipeProducts)
+                .WithMany(r => r.RecipeProducts)
                 .HasForeignKey(rp => rp.RecipeId);
-
             entity
                 .HasOne(rp => rp.Product)
                 .WithMany(p => p.RecipeProducts)
@@ -41,6 +40,8 @@ namespace EatHealthy.Data.Configuration
             entity
                 .ToTable("RecipeProducts")
                 .HasComment("Links a Product to a Recipe with a specific amount");
+
+            entity.Property(rp => rp.ModifiedOn).IsConcurrencyToken();
         }
     }
 }

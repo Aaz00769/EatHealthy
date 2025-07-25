@@ -65,7 +65,8 @@ namespace AspNetCoreArchTemplate.Data.Repository
         }
         public async Task UpdateRecipeAsync(Recipe recipe)
         {
-            _context.Recipes.Update(recipe); // Proper update call
+            // This method should handle the update without RemoveAllProducts
+            _context.Recipes.Update(recipe);
             await _context.SaveChangesAsync();
         }
         public async Task<Recipe?> GetByIdAsync(Guid id)
@@ -101,7 +102,7 @@ namespace AspNetCoreArchTemplate.Data.Repository
             _context.RecipeProducts.RemoveRange(recipe.RecipeProducts);
             recipe.RecipeProducts.Clear(); 
 
-            await _context.SaveChangesAsync();
+            
         }
 
         

@@ -24,13 +24,15 @@ namespace EatHealthy.Data.Models
         public Guid ProductId { get; set; }
 
         [Comment("Amount of the product used in this recipe (grams)")]
-        public int Grams { get; set; }
+        public int? Grams { get; set; }
 
         [Comment("Optional description (e.g., chopped, grilled, peeled)")]
         public string? Note { get; set; }
 
         [Comment("Times Product is used in Recepie")]
-        public int Quantity { get; set; } 
+        public int Quantity { get; set; }
+        [Comment("Date and time when the recipe was last modified (nullable)")]
+        public DateTime? ModifiedOn { get; set; }
 
         // Navigation properties
         public Recipe Recipe { get; set; } = null!;

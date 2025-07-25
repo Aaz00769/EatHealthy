@@ -3,13 +3,15 @@
 @{
     ViewData["Title"] = "Edit Recipe";
     var products = (IEnumerable<ProductViewModel>)ViewBag.AvailableProducts;
+
+
 }
 
 <h2>Edit Recipe</h2>
 
 <form asp-action="EditRecipe" method="post">
     <input type="hidden" asp-for="RecipeId" />
-
+    <input type="hidden" name="rowVersion" value="@ViewBag.ConcurrencyToken" />
     <div class="form-group">
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
@@ -25,21 +27,41 @@
         <textarea asp-for="Description" class="form-control"></textarea>
     </div>
 
-    <h4>Products</h4>
+     <h4>Products</h4>
     <div id="products-list">
         @for (int i = 0; i < Model.SelectedProducts.Count; i++)
         {
+            // Add null check here
+            var productInput = Model.SelectedProducts[i];
+            if (productInput == null)
+            {
+                continue; // Skip null entries
+            }
+            
             <div class="product-row mb-2">
                 <select name="SelectedProducts[@i].ProductId" class="form-control d-inline-block w-auto" required>
                     <option value="">-- Select Product --</option>
-                    @foreach (var product in products)
+                    @if (products == null) {
+                        continue;
+                    }
+                    else
                     {
-                        <option value="@product.Id" selected="@(product.Id == Model.SelectedProducts[i].ProductId)">
+                        @foreach (var product in products)
+                        {
+                        // Skip null products
+                        if (product == null) continue;
+                        
+                        <option value="@product.Id" 
+                                selected="@(product.Id == productInput.ProductId)">
                             @product.Name (@product.Calories kcal)
                         </option>
+                       }
                     }
+                    
                 </select>
-                <input type="number" name="SelectedProducts[@i].Quantity" value="@Model.SelectedProducts[i].Quantity" class="form-control d-inline-block w-auto" min="1" required />
+                <input type="number" name="SelectedProducts[@i].Quantity" 
+                       value="@productInput.Quantity" 
+                       class="form-control d-inline-block w-auto" min="1" required />
                 <button type="button" class="btn btn-danger btn-sm remove-product">Remove</button>
             </div>
         }
@@ -54,7 +76,14 @@
     <script>
         let index = @Model.SelectedProducts.Count;
 
-        const products = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(products));
+        // Filter out null products before serialization
+        const products = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+            products?.Where(p => p != null).Select(p => new {
+                id = p.Id,
+                name = p.Name,
+                calories = p.Calories
+            }) ?? []
+        ));
 
         document.getElementById("add-product").addEventListener("click", () => {
             const container = document.createElement("div");

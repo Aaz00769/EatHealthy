@@ -79,24 +79,58 @@ namespace EatHealthy.Services.Core
             await _recipeRepository.AddRecipeAsync(newRecipe);
         }
 
-        //Save All changes to a recepie after a submit
-        /*            recipe.CreatedOn = DateTime.Now;
-         */
+
         public async Task EditRecipeAsync(Guid userId, RecipeFormInputModel model)
         {
-            
-            var recipe = await _recipeRepository.GetByIdAsync(model.RecipeId);
+            // Get recipe with products
+            var recipe = await _recipeRepository.GetByIdWithProductsAsync(userId, model.RecipeId);
+            if (recipe == null) throw new InvalidOperationException("Recipe not found.");
 
-            if (recipe == null)
-                throw new InvalidOperationException("receps not found.");
-
+            // Update scalar properties
             recipe.Name = model.Name;
             recipe.Description = model.Description;
-            recipe.CreatedByUserId = userId;
+            recipe.ModifiedOn = DateTime.UtcNow; // Critical: update concurrency token
+
+            var newProductsDict = model.SelectedProducts
+         .Where(p => p != null)
+         .ToDictionary(p => p.ProductId);
 
             
-            await _recipeRepository.UpdateAsync(recipe);
-            await _recipeRepository.SaveChangesAsync();
+
+            // Process existing recipe products
+            foreach (var existingProduct in recipe.RecipeProducts.ToList())
+            {
+                if (newProductsDict.TryGetValue(existingProduct.ProductId, out var newProduct))
+                {
+                    // Update existing product
+                    existingProduct.Quantity = newProduct.Quantity;
+                    existingProduct.Grams = newProduct.Grams;
+                    newProductsDict.Remove(existingProduct.ProductId); // Mark as processed
+                }
+                else
+                {
+                    // Remove product not in new list
+                    recipe.RecipeProducts.Remove(existingProduct);
+                }
+            }
+            
+            // Add new products that weren't in the original recipe
+            foreach (var newProduct in newProductsDict.Values)
+            {
+                recipe.RecipeProducts.Add(new()
+                {
+
+                    ProductId = newProduct.ProductId,
+                    Quantity = newProduct.Quantity,
+                   
+
+
+                });//recepie ID is 0000-s , produc is null, product Id is i think correct
+            }
+
+
+            // Single save operation
+            await _recipeRepository.UpdateRecipeAsync(recipe);
         }
         public async Task<RecipeFormInputModel?> GetForEditByIdasync(Guid id)
         {
