@@ -74,9 +74,10 @@
 
 @section Scripts {
     <script>
-        let index = @Model.SelectedProducts.Count;
-
-        // Filter out null products before serialization
+        // Initialize with the current count
+        let nextIndex = @Model.SelectedProducts.Count;
+        
+        // Serialize products to JSON
         const products = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
             products?.Where(p => p != null).Select(p => new {
                 id = p.Id,
@@ -88,50 +89,52 @@
         document.getElementById("add-product").addEventListener("click", () => {
             const container = document.createElement("div");
             container.className = "product-row mb-2";
-
-            const select = document.createElement("select");
-            select.name = `SelectedProducts[${index}].ProductId`;
-            select.className = "form-control d-inline-block w-auto";
-            select.required = true;
-
-            let defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "-- Select Product --";
-            select.appendChild(defaultOption);
-
+            
+            // Build options HTML
+            let optionsHtml = '<option value="">-- Select Product --</option>';
             products.forEach(p => {
-                const opt = document.createElement("option");
-                opt.value = p.id;
-                opt.textContent = `${p.name} (${p.calories} kcal)`;
-                select.appendChild(opt);
+                optionsHtml += `<option value="${p.id}">${p.name} (${p.calories} kcal)</option>`;
             });
-
-            const qty = document.createElement("input");
-            qty.type = "number";
-            qty.name = `SelectedProducts[${index}].Quantity`;
-            qty.value = 1;
-            qty.min = 1;
-            qty.required = true;
-            qty.className = "form-control d-inline-block w-auto";
-
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.textContent = "Remove";
-            removeBtn.className = "btn btn-danger btn-sm remove-product";
-            removeBtn.onclick = () => container.remove();
-
-            container.appendChild(select);
-            container.appendChild(qty);
-            container.appendChild(removeBtn);
-
+            
+            container.innerHTML = `
+                <select name="SelectedProducts[${nextIndex}].ProductId" class="form-control d-inline-block w-auto" required>
+                    ${optionsHtml}
+                </select>
+                <input type="number" name="SelectedProducts[${nextIndex}].Quantity" value="1" class="form-control d-inline-block w-auto" min="1" required />
+                <button type="button" class="btn btn-danger btn-sm remove-product">Remove</button>
+            `;
+            
             document.getElementById("products-list").appendChild(container);
-
-            index++;
+            
+            // Attach remove handler to the new row
+            container.querySelector('.remove-product').addEventListener('click', function() {
+                container.remove();
+                reindexProducts();
+            });
+            
+            nextIndex++;
         });
 
-        document.querySelectorAll(".remove-product").forEach(btn => {
-            btn.addEventListener("click", function () {
-                this.closest(".product-row").remove();
+        // Function to re-index all product rows
+        function reindexProducts() {
+            const rows = document.querySelectorAll('.product-row');
+            rows.forEach((row, index) => {
+                // Update select name
+                const select = row.querySelector('select');
+                select.name = `SelectedProducts[${index}].ProductId`;
+                
+                // Update quantity input name
+                const input = row.querySelector('input[type="number"]');
+                input.name = `SelectedProducts[${index}].Quantity`;
+            });
+            nextIndex = rows.length;
+        }
+
+        // Attach remove handlers to existing rows
+        document.querySelectorAll('.product-row').forEach(row => {
+            row.querySelector('.remove-product').addEventListener('click', function() {
+                row.remove();
+                reindexProducts();
             });
         });
     </script>

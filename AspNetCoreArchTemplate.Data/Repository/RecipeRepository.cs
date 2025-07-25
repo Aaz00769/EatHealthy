@@ -92,19 +92,28 @@ namespace AspNetCoreArchTemplate.Data.Repository
         public async Task RemoveAllProductsFromRecipeAsync(Guid recipeId, Guid userId)
         {
             var recipe = await _context.Recipes
-               .Include(r => r.RecipeProducts)
-               .FirstOrDefaultAsync(r => r.Id == recipeId && r.CreatedByUserId == userId && !r.IsDeleted);
+                .Include(r => r.RecipeProducts)
+                .FirstOrDefaultAsync(r => r.Id == recipeId && r.CreatedByUserId == userId);
 
-
-            if (recipe == null)
-                throw new ArgumentException("Recipe not found.");
+            if (recipe == null) return;
 
             _context.RecipeProducts.RemoveRange(recipe.RecipeProducts);
-            recipe.RecipeProducts.Clear(); 
+            await _context.SaveChangesAsync();
+        }
+        public async Task AddProductToRecipeAsync(Guid recipeId, Guid productId, int quantity, int? grams)
+        {
+            var recipeProduct = new RecipeProduct
+            {
+                RecipeId = recipeId,
+                ProductId = productId,
+                Quantity = quantity,
+                Grams = grams
+            };
 
-            
+            _context.RecipeProducts.Add(recipeProduct);
+            await _context.SaveChangesAsync();
         }
 
-        
+
     }
 }
