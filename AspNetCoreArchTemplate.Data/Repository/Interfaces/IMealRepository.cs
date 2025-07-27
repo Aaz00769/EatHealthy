@@ -9,8 +9,10 @@ namespace AspNetCoreArchTemplate.Data.Repository.Interfaces
 {
     public interface IMealRepository : IRepository<Meal, Guid>
     {
-        // Add Meal-specific methods here if needed
-        // For example:
-        // Task<IEnumerable<Meal>> GetMealsByDayIdAsync(Guid dayId);
+        Task<Meal?> GetByIdWithRecipesAsync(Guid id, bool trackChanges = false);
+        Task<IEnumerable<Meal>> GetUserMealsAsync(Guid userId);
+        Task AddRecipeToMealAsync(MealRecipe mealRecipe);
+        Task RemoveRecipeFromMealAsync(Guid mealId, Guid recipeId);
     }
 }
+

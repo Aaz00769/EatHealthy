@@ -9,6 +9,9 @@ namespace AspNetCoreArchTemplate.Data.Repository.Interfaces
 {
     public interface IDayRepository : IRepository<Day, Guid>
     {
-
+        Task<Day?> GetByIdWithMealsAsync(Guid id, bool trackChanges = false);
+        Task<IEnumerable<Day>> GetUserDaysAsync(Guid userId);
+        Task AddMealToDayAsync(DayMeal dayMeal);
+        Task RemoveMealFromDayAsync(Guid dayMealId);
     }
 }

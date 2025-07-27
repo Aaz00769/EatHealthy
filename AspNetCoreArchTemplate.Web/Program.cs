@@ -40,8 +40,8 @@ namespace EatHealthy.Web
             
 
 
-            /* builder.Services.AddScoped<IDayService, DayService>();
-             builder.Services.AddScoped<IMealService, MealService>();*/
+            builder.Services.AddScoped<IDayService, DayService>();
+             builder.Services.AddScoped<IMealService, MealService>();
             builder.Services.AddScoped<IRecipeService, RecipeService>();
             builder.Services.AddTransient<IProductService, ProductService>();
            

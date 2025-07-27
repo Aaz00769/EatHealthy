@@ -23,8 +23,9 @@ namespace EatHealthy.Data.Models
         [Comment("Optional note (e.g., mood, hunger level, etc.)")]
         public string? Note { get; set; }
 
-        [Comment("Timestamp when the meal was consumed (optional)")]
-        public DateTime? TimeEaten { get; set; }
+        [Comment("Used to check if itme is Soft Delited")]
+        public bool IsDeleted { get; set; } = false;
+
 
         [Comment("List of recipes consumed in this meal")]
         public ICollection<MealRecipe> MealRecipes { get; set; } = new List<MealRecipe>();

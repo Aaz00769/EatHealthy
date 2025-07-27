@@ -27,6 +27,7 @@ namespace AspNetCoreArchTemplate.Data.Repository
                 .Where(r => !r.IsDeleted && r.IsPublic)
                 .Include(r => r.RecipeProducts)
                     .ThenInclude(rp => rp.Product)
+                .AsNoTracking()
                 .ToListAsync();
         }
         public async Task<Recipe?> GetDetailedByIdAsync( Guid id)
@@ -43,19 +44,24 @@ namespace AspNetCoreArchTemplate.Data.Repository
                 .Where(r => r.CreatedByUserId == userId)
                 .Include(r => r.RecipeProducts)
                     .ThenInclude(rp => rp.Product)
-                    .ToListAsync();
+                .AsNoTracking()
+                .ToListAsync();
                 
         }
-
-        public async Task<Recipe?> GetByIdWithProductsAsync(Guid userId, Guid id)
+        public async Task<Recipe?> GetByIdWithProductsAsync(Guid userId, Guid id,bool trackChanges = true)
         {
-            return await this.All()
-                .Where(r => r.CreatedByUserId == userId && r.Id == id && !r.IsDeleted)
+            var query = _context.Recipes
                 .Include(r => r.RecipeProducts)
-                    .ThenInclude(rp => rp.Product)
-                .FirstOrDefaultAsync();
-        }
+                .ThenInclude(rp => rp.Product)
+                .Where(r => r.CreatedByUserId == userId && r.Id == id);
 
+            if (!trackChanges)
+            {
+                query = query.AsNoTracking();
+            }
+
+            return await query.FirstOrDefaultAsync();
+        }
         //Adds a recepie 
         public async Task AddRecipeAsync(Recipe recipe)
         {
@@ -78,7 +84,6 @@ namespace AspNetCoreArchTemplate.Data.Repository
             await this.UpdateAsync(recipe);      // synchronous
             await this.SaveChangesAsync(); // async save
         }
-
         public async Task<bool> SoftDeleteAsync(Guid id)
         {
             var recipe = await this.GetByIdAsync(id);
@@ -114,6 +119,18 @@ namespace AspNetCoreArchTemplate.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<Recipe>> GetByIdsAsync(IEnumerable<Guid> ids)
+        {
+            var distinctIds = ids.Distinct().ToList();
+            if (!distinctIds.Any())
+                return Enumerable.Empty<Recipe>();
 
+            return await _context.Recipes
+                .Where(r => distinctIds.Contains(r.Id))
+                .Include(r => r.RecipeProducts)
+                    .ThenInclude(rp => rp.Product)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

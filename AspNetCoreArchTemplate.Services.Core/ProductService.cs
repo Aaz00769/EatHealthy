@@ -29,7 +29,6 @@ namespace EatHealthy.Services.Core
         {
             IEnumerable<ProductViewModel> allProducts = await this._productRepository
                 .All()
-                .Where(p => !p.IsDeleted)
                 .Where(p => !p.IsDeleted && p != null)
                 .Select(p => new ProductViewModel()
                 {

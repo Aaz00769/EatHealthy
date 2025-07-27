@@ -45,10 +45,7 @@ public class RecipeFacade : IRecipeFacade
         return await _recipeService.ShowRecipeByIdAsync(userId, id);
     }
 
-    public async Task<RecipeFormInputModel?> GetForEditByIdasync(Guid id)
-    {
-        return await _recipeService.GetForEditByIdasync(id);
-    }
+    
 
     public async Task<bool> SoftDeleteRecipeAsync(Guid id)
     {

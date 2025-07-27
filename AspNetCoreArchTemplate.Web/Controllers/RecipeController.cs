@@ -51,7 +51,7 @@ namespace EatHealthy.Web.Controllers
 
             await _recipeFacade.CreateRecipeAsync(userId, model);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MyRecipes");
         }
 
         [HttpGet]
@@ -80,10 +80,11 @@ namespace EatHealthy.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> EditRecipe(Guid recipeId)
         {
-            var recipe = await _recipeFacade.GetForEditByIdasync(recipeId);
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var recipe = await _recipeFacade.ShowRecipeByIdAsync(userId, recipeId);
             if (recipe == null) return NotFound();
 
-            // Ensure SelectedProducts is not null and filter nulls
+            // chck if SelectedProducts is not Null
             recipe.SelectedProducts = recipe.SelectedProducts?
                 .Where(p => p != null)
                 .ToList() ?? new List<RecipeProductFormInputModel>();

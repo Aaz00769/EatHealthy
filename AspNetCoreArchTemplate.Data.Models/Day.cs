@@ -25,8 +25,14 @@ namespace EatHealthy.Data.Models
         [Comment("Whether the user has marked this day as completed")]
         public bool IsCompleted { get; set; } = false;
 
+        [Comment("Used to check if itme is Soft Delited")]
+        public bool IsDeleted { get; set; } = false;
+
         [Comment("All meals planned for this day")]
         public ICollection<DayMeal> DayMeals { get; set; } = new List<DayMeal>();
 
+
+
+       
     }
 }

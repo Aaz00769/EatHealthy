@@ -17,10 +17,11 @@ namespace AspNetCoreArchTemplate.Data.Repository.Interfaces
         Task<bool> SoftDeleteAsync(Guid id);
         Task RemoveAllProductsFromRecipeAsync(Guid recipeId, Guid userId);
 
-        Task<Recipe?> GetByIdWithProductsAsync(Guid userId, Guid id);
+        Task<Recipe?> GetByIdWithProductsAsync(Guid userId, Guid id, bool trackChanges = false);
         Task AddProductToRecipeAsync(Guid recipeId, Guid productId, int quantity, int? grams);
 
 
         Task UpdateRecipeAsync(Recipe Recipe);
+        Task<IEnumerable<Recipe>> GetByIdsAsync(IEnumerable<Guid> ids);
     }
 }
