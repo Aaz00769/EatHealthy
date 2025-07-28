@@ -157,9 +157,12 @@ namespace EatHealthy.Services.Core
         private int CalculateTotalCalories(IEnumerable<DayMeal> dayMeals)
         {
             return dayMeals
-                .Where(dm => dm.Meal != null && !dm.Meal.IsDeleted)
-                .Sum(dm => dm.Meal.MealRecipes.Sum(mr => mr.Recipe.RecipeProducts.Sum(rp =>
-                        ((rp.Product?.Calories ?? 0) * rp.Quantity) * (rp.Grams ?? 1))));
+               .Where(dm => dm.Meal != null && !dm.Meal.IsDeleted)
+                    .Sum(dm =>
+                           dm.Meal.MealRecipes.Sum(mr =>
+                           mr.Recipe?.RecipeProducts.Sum(rp =>
+                          (rp.Product?.Calories ?? 0) * rp.Quantity) ?? 0)
+                     );
         }
     }
 }

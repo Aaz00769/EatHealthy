@@ -17,23 +17,32 @@ namespace AspNetCoreArchTemplate.Data.Repository
         public async Task<Day?> GetByIdWithMealsAsync(Guid id, bool trackChanges = false)
         {
             var query = _context.Days
-                .Include(d => d.DayMeals)
-                    .ThenInclude(dm => dm.Meal)
-                .Where(d => d.Id == id);
+              .Include(d => d.DayMeals)
+                .ThenInclude(dm => dm.Meal)
+                    .ThenInclude(m => m.MealRecipes)
+                        .ThenInclude(mr => mr.Recipe)
+                            .ThenInclude(r => r.RecipeProducts)
+                                .ThenInclude(rp => rp.Product)
+              .Where(d => d.Id == id);
 
             if (!trackChanges) query = query.AsNoTracking();
 
             return await query.FirstOrDefaultAsync();
         }
+        
 
         public async Task<IEnumerable<Day>> GetUserDaysAsync(Guid userId)
         {
             return await _context.Days
-                .Where(d => d.CreatedByUserId == userId && !d.IsDeleted)
-                .Include(d => d.DayMeals)
-                    .ThenInclude(dm => dm.Meal)
-                .AsNoTracking()
-                .ToListAsync();
+            .Where(d => d.CreatedByUserId == userId && !d.IsDeleted)
+            .Include(d => d.DayMeals)
+                .ThenInclude(dm => dm.Meal)
+                    .ThenInclude(m => m.MealRecipes)
+                        .ThenInclude(mr => mr.Recipe)
+                            .ThenInclude(r => r.RecipeProducts)
+                                .ThenInclude(rp => rp.Product)
+            .AsNoTracking()
+            .ToListAsync();
         }
 
         public async Task AddMealToDayAsync(DayMeal dayMeal)
