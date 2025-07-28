@@ -93,8 +93,6 @@
             await _mealRepository.AddRecipeToMealAsync(mealRecipe);
         }
 
-       
-
         public async Task<MealViewModel?> GetMealByIdAsync(Guid id)
         {
             var meal = await _mealRepository.GetByIdWithRecipesAsync(id, trackChanges: false);
@@ -121,6 +119,24 @@
             await _mealRepository.UpdateAsync(meal);
             await _mealRepository.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<MealViewModel>> GetMealsByIdsAsync(IEnumerable<Guid> mealIds)
+        {
+            var distinctIds = mealIds.Distinct().ToList();
+            if (!distinctIds.Any())
+                return Enumerable.Empty<MealViewModel>();
+
+            var meals = await _mealRepository.All()
+                .Where(m => distinctIds.Contains(m.Id) && !m.IsDeleted)
+                .Include(m => m.MealRecipes)
+                    .ThenInclude(mr => mr.Recipe)
+                        .ThenInclude(r => r.RecipeProducts)
+                            .ThenInclude(rp => rp.Product)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return meals.Select(MapToViewModel);
         }
         //-----------------------------------------------------------------
         //Private methoods 

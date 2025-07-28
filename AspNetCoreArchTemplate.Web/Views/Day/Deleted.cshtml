@@ -1,0 +1,52 @@
+﻿@model IEnumerable<EatHealthy.Web.ViewModels.Day.DayViewModel>
+
+@{
+    ViewData["Title"] = "Deleted Days";
+}
+
+<h2 class="mb-4">Deleted Days</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No deleted days found.
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var day in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-danger">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">@day.Date.ToString("d")</h5>
+                        <div class="card-text">
+                            <p><strong>Meals:</strong> @day.MealCount</p>
+                            <p><strong>Total Calories:</strong> @day.TotalCalories</p>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <form asp-action="Restore" method="post">
+                                <input type="hidden" name="id" value="@day.Id" />
+                                <button type="submit" class="btn btn-sm btn-success">Restore</button>
+                            </form>
+                            <form asp-action="HardDelete" method="post">
+                                <input type="hidden" name="id" value="@day.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Permanently delete this day? This cannot be undone.')">
+                                    Delete Permanently
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<div class="mt-3">
+    <a asp-action="MyDays" class="btn btn-secondary">Back to My Days</a>
+</div>

@@ -20,5 +20,8 @@ namespace EatHealthy.Services.Core.Interfaces
         Task<IEnumerable<Recipe>> GetUserRecipesAsync(Guid userId);
 
         Task EditMealAsync(Guid mealId, Guid userId, MealFormInputModel model);
+        Task<IEnumerable<MealViewModel>> GetMealsByIdsAsync(IEnumerable<Guid> mealIds);
+
+
     }
 }

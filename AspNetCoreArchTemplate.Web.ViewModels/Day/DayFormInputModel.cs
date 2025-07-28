@@ -16,6 +16,6 @@ namespace EatHealthy.Web.ViewModels.Day
         public string? Note { get; set; }
 
         public List<Guid> SelectedMealIds { get; set; } = new();
-
+        public Guid Id { get; set; }
     }
 }

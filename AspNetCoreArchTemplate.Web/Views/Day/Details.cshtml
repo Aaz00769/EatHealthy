@@ -1,0 +1,37 @@
+﻿@model EatHealthy.Web.ViewModels.Day.DayViewModel
+
+@{
+    ViewData["Title"] = "Day Details";
+}
+
+<h2>@Model.Date.ToString("d")</h2>
+<p><strong>Note:</strong> @Model.Note</p>
+<p><strong>Total Calories:</strong> @Model.TotalCalories</p>
+<p><strong>Meals:</strong> @Model.MealCount</p>
+
+<hr />
+
+@if (ViewBag.DayMeals != null)
+{
+    <h3>Meals in this Day:</h3>
+    <div class="row">
+        @foreach (var meal in (IEnumerable<EatHealthy.Web.ViewModels.Meal.MealViewModel>)ViewBag.DayMeals)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@meal.Name</h5>
+                        <p class="card-text">Calories: @meal.TotalCalories</p>
+                        <a asp-controller="Meal" asp-action="Details" asp-route-id="@meal.Id"
+                           class="btn btn-sm btn-outline-info">View Meal</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="MyDays" class="btn btn-secondary">Back to My Days</a>
+</div>

@@ -12,6 +12,9 @@ namespace AspNetCoreArchTemplate.Data.Repository.Interfaces
         Task<Day?> GetByIdWithMealsAsync(Guid id, bool trackChanges = false);
         Task<IEnumerable<Day>> GetUserDaysAsync(Guid userId);
         Task AddMealToDayAsync(DayMeal dayMeal);
-        Task RemoveMealFromDayAsync(Guid dayMealId);
+        Task RemoveMealFromDayAsync(Guid dayId, Guid mealId);
+        Task<IEnumerable<Day>> GetAllDeletedAsync(Guid userId);
+        Task DeleteAsync(Day day);
     }
 }
+
