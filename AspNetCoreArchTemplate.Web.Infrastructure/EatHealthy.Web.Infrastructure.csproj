@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Data.Models\EatHealthy.Data.Models.csproj" />
+    <ProjectReference Include="..\AspNetCoreArchTemplate.Data\AspNetCoreArchTemplate.Data.csproj" />
     <ProjectReference Include="..\AspNetCoreArchTemplate.GCommon\EatHealthy.GCommon.csproj" />
   </ItemGroup>
 

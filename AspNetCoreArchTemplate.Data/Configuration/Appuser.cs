@@ -28,7 +28,11 @@ namespace AspNetCoreArchTemplate.Data.Configuration
                    .HasForeignKey(r => r.CreatedByUserId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            
+            builder.Property(u => u.ProfileCompleted)
+           .IsRequired()
+           .HasDefaultValue(false);
+
+           
         }
     }
 }

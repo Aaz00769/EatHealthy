@@ -22,8 +22,7 @@ namespace EatHealthy.Data
         public virtual DbSet<Meal> Meals { get; set; }
         public virtual DbSet<Day> Days { get; set; }
         public virtual DbSet<DayMeal> DayMeals { get; set; }
-
-
+        public virtual DbSet<UserProfile> UserProfiles { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             

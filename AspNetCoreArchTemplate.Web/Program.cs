@@ -37,17 +37,18 @@ namespace EatHealthy.Web
                 .AddDefaultUI()
                  .AddDefaultTokenProviders();
             builder.Services.AddControllersWithViews();
-            
 
 
+            builder.Services.AddScoped<IProfileService, ProfileService>();
             builder.Services.AddScoped<IDayService, DayService>();
-             builder.Services.AddScoped<IMealService, MealService>();
+            builder.Services.AddScoped<IMealService, MealService>();
             builder.Services.AddScoped<IRecipeService, RecipeService>();
             builder.Services.AddTransient<IProductService, ProductService>();
            
 
             builder.Services.AddRazorPages();
 
+            builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             builder.Services.AddScoped<IDayRepository, DayRepository>();
             builder.Services.AddScoped<IMealRepository, MealRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();

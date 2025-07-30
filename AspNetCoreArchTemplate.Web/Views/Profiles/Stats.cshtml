@@ -1,0 +1,133 @@
+﻿@model EatHealthy.Web.ViewModels.Profile.UserStatsViewModel
+
+@{
+    ViewData["Title"] = "My Health Stats";
+}
+
+<div class="container">
+    <h1 class="mb-4">My Health Stats</h1>
+
+    <div class="row">
+        <!-- Basic Stats Card -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3>Basic Information</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h5>Personal</h5>
+                                <p><strong>Age:</strong> @Model.Age years</p>
+                                <p><strong>Height:</strong> @Model.Height cm</p>
+                                <p><strong>Weight:</strong> @Model.Weight kg</p>
+                                <p><strong>Target Weight:</strong> @Model.TargetWeight kg</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h5>Health</h5>
+                                <p><strong>BMI:</strong> @Model.BMI.ToString("F1") (@Model.BMIStatus)</p>
+                                <p><strong>Goal:</strong> @Model.Goal</p>
+                                <p><strong>Activity Level:</strong> @Model.ActivityLevel</p>
+                                <p><strong>Daily Calories:</strong> @Model.DailyCalorieTarget kcal</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3>Progress</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @(Model.WeightToTarget > 0 ? "Gain" : "Lose") @Math.Abs(Model.WeightToTarget).ToString("F1") kg
+                    </h5>
+
+                    <div class="progress mb-3" style="height: 30px;">
+                        <div class="progress-bar bg-success"
+                             role="progressbar"
+                             style="width: @Model.ProgressPercentage%;"
+                             aria-valuenow="@Model.ProgressPercentage"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            @Model.ProgressPercentage.ToString("F1")%
+                        </div>
+                    </div>
+
+                    <div class="row text-center">
+                        <div class="col">
+                            <p class="mb-0">Start</p>
+                            <h4>@Model.Weight.ToString("F1") kg</h4>
+                        </div>
+                        <div class="col">
+                            <p class="mb-0">Current</p>
+                            <h4>@Model.Weight.ToString("F1") kg</h4>
+                        </div>
+                        <div class="col">
+                            <p class="mb-0">Target</p>
+                            <h4>@Model.TargetWeight.ToString("F1") kg</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BMI Chart -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h3>BMI Classification</h3>
+                </div>
+                <div class="card-body">
+                    <div class="progress" style="height: 30px;">
+                        <div class="progress-bar bg-danger" style="width: 18.5%">Underweight (<18.5)</div>
+                        <div class="progress-bar bg-success" style="width: 6.5%">Normal (18.5-25)</div>
+                        <div class="progress-bar bg-warning" style="width: 5%">Overweight (25-30)</div>
+                        <div class="progress-bar bg-danger" style="width: 70%">Obese (30+)</div>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health Summary -->
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h3>Health Summary</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <div class="display-4">@Model.DailyCalorieTarget</div>
+                            <p class="text-muted">Daily Calories</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="display-4">@Model.ActivityLevel</div>
+                            <p class="text-muted">Activity Level</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="display-4">@Model.Goal</div>
+                            <p class="text-muted">Primary Goal</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    Last updated: @Model.UpdatedAt.ToString("g")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
