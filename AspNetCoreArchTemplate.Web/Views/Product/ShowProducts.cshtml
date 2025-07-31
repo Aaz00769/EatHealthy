@@ -1,4 +1,6 @@
 ﻿@using EatHealthy.Web.ViewModels.Product
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -12,8 +14,17 @@
 
 <h2>
     Available Products @Model.TotalCount
-    <a asp-action="AddProduct" class="btn btn-primary btn-sm ml-2">Add Product</a>
-    <a asp-controller="Recipe" asp-action="CreateRecipe" class="btn btn-success btn-sm ml-2">➕ Create Recipe</a>
+
+    @if ((await AuthorizationService.AuthorizeAsync(User, "Administrator")).Succeeded)
+    {
+        <div class="mb-3"> <a asp-action="AddProduct" class="btn btn-primary btn-sm ml-2">Add Product</a> </div>
+    }
+    else
+    {
+        <a asp-controller="Recipe" asp-action="CreateRecipe" class="btn btn-success btn-sm ml-2">➕ Create Recipe</a>
+    }
+
+   
 </h2>
 
 <table class="table table-striped">
@@ -31,10 +42,18 @@
                 <td>@product.Name</td>
                 <td>@product.Calories</td>
                 <td>
-                    <a asp-controller="Recipe" asp-action="CreateRecipe" asp-route-productId="@product.Id" class="btn btn-primary btn-sm">
-                        Add to Recipe
-                    </a>
-                    <a asp-action="EditProduct" asp-route-id="@product.Id" class="btn btn-secondary btn-sm">Edit</a>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "Administrator")).Succeeded)
+                    {
+                        <div class="mb-3">
+                            <a asp-action="EditProduct" asp-route-id="@product.Id" class="btn btn-secondary btn-sm">Edit</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-controller="Recipe" asp-action="CreateRecipe" asp-route-productId="@product.Id" class="btn btn-primary btn-sm">Add to Recipe </a>
+                    }
+                  
+                    
                 </td>
             </tr>
         }

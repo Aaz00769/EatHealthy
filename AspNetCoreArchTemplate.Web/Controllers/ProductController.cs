@@ -1,9 +1,11 @@
 ﻿using EatHealthy.Services.Core.Interfaces;
 using EatHealthy.Web.ViewModels.Product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EatHealthy.Web.Controllers
 {
+    
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
@@ -14,6 +16,7 @@ namespace EatHealthy.Web.Controllers
             this._productService = productService;
         }
 
+        
         [HttpGet]
         public async Task<IActionResult>ShowProducts()
         {
@@ -29,12 +32,13 @@ namespace EatHealthy.Web.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet]
         public async Task<IActionResult> AddProduct()
         {
             return View();
         }
-
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<IActionResult> AddProduct(ProductFormInputModel inputModel)
         {
@@ -54,6 +58,7 @@ namespace EatHealthy.Web.Controllers
                 return View(inputModel);
             }
         }
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet]
         public async Task<IActionResult> EditProduct(Guid id)
         {
@@ -66,6 +71,7 @@ namespace EatHealthy.Web.Controllers
 
             return View(product);
         }
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<IActionResult> EditProduct(ProductFormInputModel inputModel)
         {
@@ -85,7 +91,7 @@ namespace EatHealthy.Web.Controllers
                 return View(inputModel);
             }
         }
-
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<IActionResult> SoftDelete(Guid id)
         {
@@ -95,6 +101,7 @@ namespace EatHealthy.Web.Controllers
 
             return RedirectToAction(nameof(ShowProducts));
         }
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<IActionResult> HardDelete(Guid id)
         {
@@ -104,6 +111,7 @@ namespace EatHealthy.Web.Controllers
 
             return RedirectToAction(nameof(ShowDeletedProducts));
         }
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<IActionResult> Restore(Guid id)
         {
@@ -113,6 +121,7 @@ namespace EatHealthy.Web.Controllers
 
             return RedirectToAction(nameof(ShowDeletedProducts));
         }
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet]
         public async Task<IActionResult> ShowDeletedProducts()
         {

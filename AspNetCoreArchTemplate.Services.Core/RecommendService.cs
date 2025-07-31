@@ -20,8 +20,7 @@ namespace EatHealthy.Services.Core
     {
         private readonly IDayRepository _dayRepository;
         private readonly IMealRepository _mealRepository;
-        private readonly IProfileService _profileService;
-        private readonly IMealService _mealService;
+        private readonly IProfileService _profileService;  
         private readonly IRecipeService _recipeService;
         private const double CalorieTolerance = 0.2; // 20% tolerance
 
@@ -29,13 +28,11 @@ namespace EatHealthy.Services.Core
             IDayRepository dayRepository,
             IMealRepository mealRepository,
             IProfileService profileService,
-            IMealService mealService,
             IRecipeService recipeService)
         {
             _dayRepository = dayRepository;
             _mealRepository = mealRepository;
-            _profileService = profileService;
-            _mealService = mealService;
+            _profileService = profileService;          
             _recipeService = recipeService;
         }
 

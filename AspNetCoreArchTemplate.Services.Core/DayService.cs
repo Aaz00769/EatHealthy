@@ -16,16 +16,18 @@ namespace EatHealthy.Services.Core
     public class DayService : IDayService
     {
         private readonly IDayRepository _dayRepository;
-       
-        public DayService(IDayRepository dayRepository)
+        private readonly IMealService _mealService;
+
+        public DayService(IDayRepository dayRepository, IMealService mealService)
         {
             _dayRepository = dayRepository;
-            
+            _mealService = mealService;
         }
 
         public async Task CreateDayAsync(Guid userId, DayFormInputModel model)
         {
-            
+            await ValidateMeals(model.SelectedMealIds);
+
             var newDay = new Day
             {
                 Id = Guid.NewGuid(),
@@ -48,7 +50,8 @@ namespace EatHealthy.Services.Core
             if (day == null || day.IsDeleted || day.CreatedByUserId != userId)
                 throw new InvalidOperationException("Day not found or access denied");
 
-           
+            await ValidateMeals(model.SelectedMealIds);
+
             day.Date = model.Date;
             day.Note = model.Note;
 
@@ -126,7 +129,18 @@ namespace EatHealthy.Services.Core
 
 
 
-       
+        private async Task ValidateMeals(IEnumerable<Guid> mealIds)
+        {
+            var distinctIds = mealIds.Distinct().ToList();
+            if (!distinctIds.Any()) return;
+
+            var validCount = await _mealService.GetMealsByIdsAsync(distinctIds)
+                .ContinueWith(t => t.Result.Count());
+
+            if (validCount != distinctIds.Count)
+                throw new InvalidOperationException("One or more meals are invalid");
+        }
+
         private MealViewmodel MapToViewModel(Day day)
         {
             return new MealViewmodel

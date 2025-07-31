@@ -41,6 +41,13 @@ namespace EatHealthy.Web
                  .AddDefaultTokenProviders();
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Administrator", policy =>
+                    policy.RequireRole("Administrator"));
+                options.AddPolicy("NormalUser", policy =>
+                   policy.RequireRole("NormalUser"));
+            });
 
             builder.Services.AddScoped<IProfileService, ProfileService>();
             builder.Services.AddScoped<IDayService, DayService>();
