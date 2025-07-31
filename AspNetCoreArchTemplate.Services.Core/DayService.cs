@@ -16,7 +16,7 @@ namespace EatHealthy.Services.Core
     public class DayService : IDayService
     {
         private readonly IDayRepository _dayRepository;
-        private readonly IMealRepository _mealRepository;
+       
         public DayService(IDayRepository dayRepository)
         {
             _dayRepository = dayRepository;
