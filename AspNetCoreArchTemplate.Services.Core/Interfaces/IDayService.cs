@@ -12,11 +12,11 @@ namespace EatHealthy.Services.Core.Interfaces
     {
         Task CreateDayAsync(Guid userId, DayFormInputModel model);
         Task EditDayAsync(Guid dayId, Guid userId, DayFormInputModel model);
-        Task<DayViewModel?> GetDayByIdAsync(Guid id);
-        Task<IEnumerable<DayViewModel>> GetUserDaysAsync(Guid userId);
+        Task<MealViewmodel?> GetDayByIdAsync(Guid id);
+        Task<IEnumerable<MealViewmodel>> GetUserDaysAsync(Guid userId);
         Task<bool> SoftDeleteDayAsync(Guid id);
         Task<bool> RestoreDayAsync(Guid id);
         Task<bool> HardDeleteDayAsync(Guid id);
-        Task<IEnumerable<DayViewModel>> GetAllDeletedDaysAsync(Guid userId);
+        Task<IEnumerable<MealViewmodel>> GetAllDeletedDaysAsync(Guid userId);
     }
 }

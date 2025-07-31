@@ -11,7 +11,7 @@ namespace EatHealthy.Web.ViewModels.Meal
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string? Note { get; set; }
-        public int TotalCalories { get; set; }
+        public double TotalCalories { get; set; }
         public int RecipeCount { get; set; }
 
         public IEnumerable<Guid> RecipeIds { get; set; } = new List<Guid>();

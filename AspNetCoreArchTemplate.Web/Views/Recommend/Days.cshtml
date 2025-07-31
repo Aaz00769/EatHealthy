@@ -1,0 +1,36 @@
+﻿@using EatHealthy.Web.ViewModels.Day
+@model IEnumerable<MealViewmodel>
+@{
+    ViewData["Title"] = "Recommended Days";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No recommended days found. Try adding more meals to your collection.
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var day in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@day.Date.ToShortDateString()</h5>
+                        <p class="card-text">@day.Note</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Calories: @day.TotalCalories</li>
+                            <li class="list-group-item">Meals: @day.MealCount</li>
+                        </ul>
+                        <a asp-controller="Day" asp-action="Details" asp-route-id="@day.Id"
+                           class="btn btn-primary mt-2">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

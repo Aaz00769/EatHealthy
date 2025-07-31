@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace EatHealthy.Web.ViewModels.Day
 {
-    public class DayViewModel
+    public class MealViewmodel
     {
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
         public string? Note { get; set; }
-        public int TotalCalories { get; set; }
+        public double TotalCalories { get; set; }
         public int MealCount { get; set; }
         public IEnumerable<Guid> MealIds { get; set; } = new List<Guid>();
     }

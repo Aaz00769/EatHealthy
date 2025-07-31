@@ -77,13 +77,13 @@ namespace EatHealthy.Services.Core
             await _dayRepository.SaveChangesAsync();
         }
 
-        public async Task<DayViewModel?> GetDayByIdAsync(Guid id)
+        public async Task<MealViewmodel?> GetDayByIdAsync(Guid id)
         {
             var day = await _dayRepository.GetByIdWithMealsAsync(id, trackChanges: false);
             return day == null ? null : MapToViewModel(day);
         }
 
-        public async Task<IEnumerable<DayViewModel>> GetUserDaysAsync(Guid userId)
+        public async Task<IEnumerable<MealViewmodel>> GetUserDaysAsync(Guid userId)
         {
             var days = await _dayRepository.GetUserDaysAsync(userId);
             return days.Select(MapToViewModel);
@@ -121,7 +121,7 @@ namespace EatHealthy.Services.Core
             return true;
         }
 
-        public async Task<IEnumerable<DayViewModel>> GetAllDeletedDaysAsync(Guid userId)
+        public async Task<IEnumerable<MealViewmodel>> GetAllDeletedDaysAsync(Guid userId)
         {
             var days = await _dayRepository.GetAllDeletedAsync(userId);
             return days.Select(MapToViewModel);
@@ -141,9 +141,9 @@ namespace EatHealthy.Services.Core
                 throw new InvalidOperationException("One or more meals are invalid");
         }
 
-        private DayViewModel MapToViewModel(Day day)
+        private MealViewmodel MapToViewModel(Day day)
         {
-            return new DayViewModel
+            return new MealViewmodel
             {
                 Id = day.Id,
                 Date = day.Date,

@@ -1,0 +1,36 @@
+﻿@using EatHealthy.Web.ViewModels.Meal
+@model IEnumerable<MealViewModel>
+@{
+    ViewData["Title"] = "Recommended Meals";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No recommended meals found. Try adding more recipes.
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var meal in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@meal.Name</h5>
+                        <p class="card-text">@meal.Note</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Calories: @meal.TotalCalories</li>
+                            <li class="list-group-item">Recipes: @meal.RecipeCount</li>
+                        </ul>
+                        <a asp-controller="Meal" asp-action="Details" asp-route-id="@meal.Id"
+                           class="btn btn-primary mt-2">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

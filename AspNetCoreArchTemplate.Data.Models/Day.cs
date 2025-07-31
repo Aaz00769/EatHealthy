@@ -22,8 +22,7 @@ namespace EatHealthy.Data.Models
         [Comment("ID of the user who created this Day")]
         public Guid CreatedByUserId { get; set; }
         public AppUser CreatedByUser { get; set; } = null!;
-        [Comment("Whether the user has marked this day as completed")]
-        public bool IsCompleted { get; set; } = false;
+        
 
         [Comment("Used to check if itme is Soft Delited")]
         public bool IsDeleted { get; set; } = false;

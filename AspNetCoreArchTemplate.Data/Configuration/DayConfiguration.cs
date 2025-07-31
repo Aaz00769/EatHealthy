@@ -23,9 +23,7 @@ namespace AspNetCoreArchTemplate.Data.Configuration
             entity.Property(d => d.Note)
                 .HasMaxLength(NoteMaxLength);
 
-            entity.Property(d => d.IsCompleted)
-                .IsRequired()
-                .HasDefaultValue(false);
+           
 
             entity.HasOne(d => d.CreatedByUser)
                   .WithMany(u => u.Days)

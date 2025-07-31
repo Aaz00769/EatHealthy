@@ -44,7 +44,7 @@ namespace EatHealthy.Web
             builder.Services.AddScoped<IMealService, MealService>();
             builder.Services.AddScoped<IRecipeService, RecipeService>();
             builder.Services.AddTransient<IProductService, ProductService>();
-           
+            builder.Services.AddScoped<IRecommendService, RecommendService>();
 
             builder.Services.AddRazorPages();
 
