@@ -31,6 +31,7 @@ namespace EatHealthy.Services.Core
                     ActivityLevel = model.ActivityLevel,
                     Goal = model.Goal,
                     TargetWeight = model.TargetWeight,
+
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };

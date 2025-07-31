@@ -172,8 +172,8 @@
                 .Where(mr => mr.Recipe != null && !mr.Recipe.IsDeleted)
                 .Sum(mr =>
                     mr.Recipe.RecipeProducts.Sum(rp =>
-                        ((rp.Product?.Calories ?? 0) * rp.Quantity) * (rp.Grams ?? 1)
-                    )
+                        ((rp.Product?.Calories ?? 0) * rp.Quantity) )
+                    
                 );
         }
 

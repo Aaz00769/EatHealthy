@@ -2,16 +2,19 @@ namespace EatHealthy.Web
 {
     using AspNetCoreArchTemplate.Data.Repository;
     using AspNetCoreArchTemplate.Data.Repository.Interfaces;
+    using AspNetCoreArchTemplate.Data.Seeding.Input;
     using Data;
     using EatHealthy.Data.Models;
+    using EatHealthy.Seeding;
     using EatHealthy.Services.Core;
     using EatHealthy.Services.Core.Interfaces;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using System.Threading.Tasks;
 
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
             
@@ -56,7 +59,25 @@ namespace EatHealthy.Web
             builder.Services.AddScoped<IRecipeFacade, RecipeFacade>();
 
             WebApplication? app = builder.Build();
-            
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var logger = services.GetRequiredService<ILogger<Program>>();
+
+                try
+                {
+                    logger.LogInformation("Applying database migrations...");
+                    var context = services.GetRequiredService<EatHealthyDbContext>();
+                    context.Database.Migrate();
+                    logger.LogInformation("Migrations applied successfully");
+                }
+                catch (Exception ex)
+                {
+                    logger.LogCritical(ex, "Fatal error applying migrations");
+                    return; // Stop app if migrations fail
+                }
+            }
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -79,6 +100,33 @@ namespace EatHealthy.Web
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var logger = services.GetRequiredService<ILogger<Program>>();
+
+                try
+                {
+                    logger.LogInformation("Starting database seeding...");
+
+                    var config = new SeedConfig
+                    {
+                        UserCount = 5,
+                        ProductCount = 20,
+                        RecipesPerUser = 3,
+                        MealsPerUser = 3,
+                        DaysPerUser = 7
+                    };
+
+                    await DatabaseSeeder.SeedAsync(services, config);
+                    logger.LogInformation("Database seeding completed successfully");
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Seeding failed");
+                }
+            }
 
             app.Run();
         }
